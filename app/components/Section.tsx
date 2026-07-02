@@ -13,14 +13,18 @@ type SectionProps = {
 // The heading fades/rises into view (Phase 3); each section reveals its own items.
 export default function Section({ id, title, eyebrow, icon, children }: SectionProps) {
   return (
-    <section id={id} className="section">
-      <div className="container">
+    <section id={id} className="py-18">
+      <div className="mx-auto w-full max-w-[65rem] px-6">
         <Reveal>
-          <header className="section-head">
-            {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
-            <h2 className="section-title">
+          <header className="mb-9">
+            {eyebrow ? (
+              <p className="font-mono uppercase tracking-[0.14em] text-[0.72rem] text-accent-strong m-0 mb-3">
+                {eyebrow}
+              </p>
+            ) : null}
+            <h2 className="text-[clamp(1.75rem,4vw,2.4rem)] relative inline-flex items-center gap-[0.65rem] pb-[0.6rem] after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-12 after:h-[3px] after:rounded-sm after:bg-[linear-gradient(90deg,var(--color-accent),transparent)]">
               {icon ? (
-                <span className="section-title-icon" aria-hidden="true">
+                <span className="title-icon" aria-hidden="true">
                   {icon}
                 </span>
               ) : null}

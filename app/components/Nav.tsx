@@ -29,20 +29,24 @@ export default function Nav() {
   }, []);
 
   return (
-    <header className="nav">
-      <div className="container nav-inner">
-        <a href="#top" className="nav-brand">
+    <header className="sticky top-3 z-20 mt-3 mx-auto max-w-[1064px] px-3">
+      <div className="glass-strong w-full max-w-[65rem] mx-auto flex items-center justify-between gap-4 py-[0.7rem] px-[1.1rem] rounded-full">
+        <a href="#top" className="font-bold no-underline tracking-[-0.01em]">
           {profile.name}
         </a>
         <nav aria-label="Primary">
-          <ul className="nav-links">
+          <ul className="hidden tab:flex gap-6 list-none p-0 m-0">
             {navLinks.map((link) => {
               const isActive = active === link.href.slice(1);
               return (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className={isActive ? "is-active" : undefined}
+                    className={`no-underline text-[0.92rem] transition-colors hover:text-accent-strong ${
+                      isActive
+                        ? "text-accent-strong font-semibold"
+                        : "text-muted"
+                    }`}
                     aria-current={isActive ? "true" : undefined}
                   >
                     {link.label}
@@ -52,7 +56,11 @@ export default function Nav() {
             })}
           </ul>
         </nav>
-        <a href={profile.cvUrl} download className="nav-cta">
+        <a
+          href={profile.cvUrl}
+          download
+          className="bg-accent text-white py-2 px-[1.1rem] rounded-full no-underline text-[0.88rem] font-semibold whitespace-nowrap shadow-[0_8px_18px_-8px_rgba(37,99,235,0.7)] transition hover:bg-accent-strong hover:-translate-y-px"
+        >
           Download CV
         </a>
       </div>

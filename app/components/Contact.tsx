@@ -29,20 +29,33 @@ export default function Contact() {
       title="Contact"
       icon={<MessageIcon />}
     >
-      <Reveal as="div" className="contact-panel">
-        <p className="contact-lead">
+      <Reveal
+        as="div"
+        className="glass-strong rounded-[18px] p-8 grid gap-7"
+      >
+        <p className="m-0 max-w-[520px] text-[1.1rem] text-muted">
           Open to frontend opportunities and collaborations. Feel free to reach
           out.
         </p>
 
-        <div className="contact-details">
-          <a href={`mailto:${profile.email}`} className="contact-item">
-            <span className="contact-item-icon" aria-hidden="true">
+        <div className="grid gap-4 grid-cols-1 tab:grid-cols-2">
+          <a
+            href={`mailto:${profile.email}`}
+            className="group no-underline flex items-center gap-[0.9rem] py-4 px-5 rounded-xl border border-white/70 bg-white/50 transition hover:-translate-y-0.5 hover:border-accent"
+          >
+            <span
+              className="inline-flex items-center justify-center shrink-0 w-10 h-10 text-[1.15rem] text-accent-strong bg-white/72 border border-white/70 rounded-xl transition-colors group-hover:text-accent group-hover:border-accent"
+              aria-hidden="true"
+            >
               <MailIcon />
             </span>
-            <span className="contact-item-text">
-              <span className="contact-label">Email</span>
-              <span className="contact-value">{profile.email}</span>
+            <span className="flex flex-col">
+              <span className="font-mono text-[0.72rem] uppercase tracking-[0.1em] text-accent-strong">
+                Email
+              </span>
+              <span className="text-[1.08rem] font-semibold">
+                {profile.email}
+              </span>
             </span>
           </a>
           {/* <a href={`tel:${profile.phoneHref}`} className="contact-item">
@@ -56,7 +69,7 @@ export default function Contact() {
           </a> */}
         </div>
 
-        <div className="contact-actions">
+        <div className="flex flex-wrap gap-[0.85rem]">
           <a href={profile.cvUrl} download className="btn btn-primary">
             <DownloadIcon />
             Download CV
@@ -82,7 +95,7 @@ export default function Contact() {
         </div>
       </Reveal>
 
-      <footer className="footer">
+      <footer className="mt-10 pt-6 text-center font-mono text-[0.82rem] text-muted-2">
         <p>
           © {profile.name} · {profile.role}
         </p>

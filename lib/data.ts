@@ -20,6 +20,9 @@ export type Project = {
   tagline: string;
   stack: string[];
   description: string;
+  // Path (in /public) to the card thumbnail. Swap the placeholder SVGs in
+  // /public/projects for real screenshots when available.
+  thumbnail: string;
 };
 
 export type SocialLink = {
@@ -125,6 +128,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "React", "TypeScript"],
     description:
       "Single sign-on platform and dashboard built with Next.js, integrating secure login and user management.",
+    thumbnail: "/projects/betapass.svg",
   },
   {
     name: "Entri Ticketing",
@@ -132,6 +136,7 @@ export const projects: Project[] = [
     stack: ["React Native", "Blockchain", "NFT"],
     description:
       "Mobile ticketing app built with React Native, integrating NFT-based ticket validation.",
+    thumbnail: "/projects/entri-ticketing.svg",
   },
   {
     name: "SIPKONS",
@@ -139,6 +144,7 @@ export const projects: Project[] = [
     stack: ["Vue.js", "CMS"],
     description:
       "Government housing system built with Vue.js, featuring custom CMS capabilities.",
+    thumbnail: "/projects/sipkons.svg",
   },
 ];
 
