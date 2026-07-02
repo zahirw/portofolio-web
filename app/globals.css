@@ -55,23 +55,6 @@ body {
   overflow-x: hidden;
 }
 
-a {
-  color: inherit;
-}
-
-h1,
-h2,
-h3 {
-  line-height: 1.15;
-  margin: 0;
-  letter-spacing: -0.02em;
-}
-
-ul,
-ol {
-  margin: 0;
-}
-
 /* ---------- Reusable pieces (@utility) ---------- */
 
 /* Glassmorphism surfaces used across nav, cards, panels. */
@@ -117,7 +100,7 @@ ol {
 
 @utility btn-primary {
   background: var(--color-accent);
-  color: #fff;
+  color: #ffff;
   box-shadow: 0 12px 26px -10px rgba(37, 99, 235, 0.75);
   &:hover {
     background: var(--color-accent-strong);
