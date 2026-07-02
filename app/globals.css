@@ -45,11 +45,6 @@
   --animate-drift-2: drift-2 26s ease-in-out infinite;
   --animate-drift-3: drift-3 23s ease-in-out infinite;
 
-  /* Counter-rotating dashed dot rings around the photo orb (same 30s speed). */
-  --animate-ring-spin: ring-spin 30s linear infinite;
-  --animate-ring-spin-rev: ring-spin-rev 30s linear infinite;
-  /* Sweep of light circling the photo orb — an energetic HUD scan. */
-  --animate-ring-light: ring-spin-rev 7s linear infinite;
   /* Flickering fire behind the orb emblem (blazing hold-to-charge feedback). */
   --animate-fire-core: fire-core 0.3s ease-in-out infinite;
   --animate-fire-lick: fire-lick 0.42s ease-in-out infinite;
@@ -369,19 +364,6 @@ body {
   }
 }
 
-/* ---------- Tech ring / border keyframes ---------- */
-@keyframes ring-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes ring-spin-rev {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-
 /* ---------- Fire flicker keyframes ---------- */
 /* Fast, jumpy scaling pulse for the hot core. */
 @keyframes fire-core {
@@ -433,6 +415,79 @@ body {
   }
 }
 
+/* ---------- Circuit field (radiating PCB traces) ---------- */
+/* Overlay of traces radiating from the orb center across the whole grid
+   (CircuitField.tsx). The base lines are a permanent ambient backdrop; the
+   node pads and the traveling light pulses stay invisible until the orb is
+   pressed, then scale with --lvl, the live hold-to-charge progress the
+   component writes as the orb charges/drains. Pulses only animate while any
+   charge is present ([data-active], set whenever --lvl > 0) and restart from
+   the center on every fresh press; on release they keep flowing as the field
+   drains out. */
+.circuit-field {
+  --lvl: 0;
+  /* Every trace starts at the SVG's own center (0,0 in its centered
+     viewBox), which sits under the orb — so mask that origin out and fade
+     the whole field in just past it, rather than letting lines cut across
+     the portrait. Radius mirrors --well-r's formula (orb radius + 14px) and
+     inherits the live --orb-d from .bento at desk:; the fallback covers
+     mobile/tablet, where the orb is smaller and --orb-d is unset. The fade
+     band is kept tight (24px): a wide feather would swallow the traveling
+     pulses until well past the orb, making them seem to spawn mid-path
+     instead of emerging right at the orb's rim. */
+  --fade-r: calc(var(--orb-d, 300px) / 2 + 14px);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 0,
+    transparent var(--fade-r),
+    #000 calc(var(--fade-r) + 24px)
+  );
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 0,
+    transparent var(--fade-r),
+    #000 calc(var(--fade-r) + 24px)
+  );
+}
+
+/* Always-on faint trace lines — a permanent PCB backdrop, independent of
+   charge state. */
+.circuit-field .circuit-base {
+  opacity: 0.16;
+}
+
+/* Node pads only appear while the orb is pressed, brightening with charge. */
+.circuit-field .circuit-nodes {
+  opacity: 0;
+}
+
+.circuit-field[data-active="true"] .circuit-nodes {
+  opacity: calc(var(--lvl) * 0.7);
+}
+
+.circuit-field .circuit-pulses {
+  opacity: 0;
+  /* The moving light warms toward accent-strong as the charge climbs. */
+  stroke: color-mix(
+    in oklab,
+    var(--color-accent-strong) calc(var(--lvl) * 100%),
+    var(--color-accent)
+  );
+  filter: drop-shadow(
+    0 0 calc(2px + var(--lvl) * 4px)
+      color-mix(in oklab, var(--color-accent) 80%, transparent)
+  );
+}
+
+/* The comet motion itself is SMIL inside CircuitField.tsx (an animateMotion
+   head bead + dash-reveal tail streaks welded on one timeline); the
+   component pauses/rewinds that timeline off the charge state, so the only
+   CSS here is the visibility gate above. Sizes/dimming ride along as
+   presentation attributes. */
+.circuit-field[data-active="true"] .circuit-pulses {
+  opacity: calc(0.35 + var(--lvl) * 0.65);
+}
+
 /* Registered custom property so the conic gradient angle can animate. */
 @property --border-angle {
   syntax: "<angle>";
@@ -445,6 +500,8 @@ body {
    same nine cards from a single column → 2 columns → the full 4-column bento. */
 .bento {
   --gap: 1rem;
+  /* Positioning context for the absolutely-inset circuit field background. */
+  position: relative;
   display: grid;
   gap: var(--gap);
   grid-template-columns: 1fr;
@@ -461,9 +518,13 @@ body {
     "contact";
 }
 
-/* The orb is always a tall, roughly square feature. */
+/* The orb is always a tall, roughly square feature. z-index:5 keeps it above
+   the circuit field (behind every card, z-index:auto) at every breakpoint,
+   so the traces' convergence point stays tucked behind the orb visuals. */
 .bento > [style*="orb"] {
   min-height: 300px;
+  position: relative;
+  z-index: 5;
 }
 
 @media (min-width: 720px) {
@@ -513,8 +574,6 @@ body {
      exp/projects buttons underneath. */
   .bento > [style*="orb"] {
     grid-area: 2 / 2 / 4 / 4 !important;
-    position: relative;
-    z-index: 5;
     pointer-events: none;
     overflow: visible;
     min-height: 0;

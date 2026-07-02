@@ -1,7 +1,12 @@
 "use client";
 
 import { useRef, useState, type ReactNode } from "react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import {
+  motion,
+  useMotionValue,
+  useReducedMotion,
+  type Variants,
+} from "motion/react";
 import Image from "next/image";
 import { profile, projects, experiences } from "@/lib/data";
 import {
@@ -14,6 +19,7 @@ import {
   ArrowRightIcon,
 } from "../icons";
 import BentoCard from "./BentoCard";
+import CircuitField from "./CircuitField";
 import Modal from "./Modal";
 import PhotoOrb from "./PhotoOrb";
 import { CircuitTrace } from "./decor";
@@ -95,9 +101,33 @@ const item: Variants = {
   },
 };
 
+// Each direct grid child: carries the grid-area + entrance animation, and
+// stretches to fill its cell so the BentoCard inside can be h-full. Lives at
+// module scope so grid re-renders never change its component identity — a
+// definition inside BentoGrid would remount every cell on any state change,
+// killing in-flight orb animations (charge/drain) with them.
+const Cell = ({
+  area,
+  variants,
+  children,
+}: {
+  area: string;
+  variants?: Variants;
+  children: ReactNode;
+}) => (
+  <motion.div style={{ gridArea: area }} variants={variants} className="min-w-0">
+    {children}
+  </motion.div>
+);
+
 export default function BentoGrid() {
   const reduce = useReducedMotion();
   const [active, setActive] = useState<ModalKey | null>(null);
+
+  /* Hold-to-charge progress lifted from the orb so the circuit field (a
+     sibling overlay) can energize with the same value. A MotionValue only —
+     the interaction never touches React state up here. */
+  const chargeProgress = useMotionValue(0);
 
   // Retain the last-shown meta so the modal keeps its content during the
   // close/exit animation (active flips to null before the panel finishes).
@@ -105,18 +135,7 @@ export default function BentoGrid() {
   if (active) lastMeta.current = MODALS[active];
   const meta = lastMeta.current;
 
-  // Each direct grid child: carries the grid-area + entrance animation, and
-  // stretches to fill its cell so the BentoCard inside can be h-full.
-  const Cell = ({ area, children }: { area: string; children: ReactNode }) => (
-    <motion.div
-      style={{ gridArea: area }}
-      variants={reduce ? undefined : item}
-      className="min-w-0"
-    >
-      {children}
-    </motion.div>
-  );
-
+  const cellVariants = reduce ? undefined : item;
   const currentRole = experiences[0];
 
   return (
@@ -127,10 +146,14 @@ export default function BentoGrid() {
         initial={reduce ? undefined : "hidden"}
         animate={reduce ? undefined : "show"}
       >
+        {/* Circuit traces radiating from the orb across the whole grid —
+            absolute overlay (not a grid item), energized while charging. */}
+        <CircuitField progress={chargeProgress} />
+
         {/* Identity — name + role + location. Its bottom edge curves up around
             the orb's top (notch-top); at desktop the deep arc eats the lower
             half, so the name block sits in the top zone. */}
-        <Cell area="identity">
+        <Cell variants={cellVariants} area="identity">
           <BentoCard className="notch-top items-center justify-center text-center desk:justify-start desk:pt-8">
             <p className="m-0 mb-1.5 inline-flex items-center justify-center gap-1.5 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent-strong">
               <MapPinIcon className="size-[1.15em]" />
@@ -146,7 +169,7 @@ export default function BentoGrid() {
         </Cell>
 
         {/* Status — availability toggle */}
-        <Cell area="status">
+        <Cell variants={cellVariants} area="status">
           <BentoCard className="justify-between">
             <span className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-2">
               Availability
@@ -161,7 +184,7 @@ export default function BentoGrid() {
         </Cell>
 
         {/* About — tall left rail */}
-        <Cell area="about">
+        <Cell variants={cellVariants} area="about">
           <BentoCard
             onClick={() => setActive("about")}
             label="Open About details"
@@ -185,14 +208,14 @@ export default function BentoGrid() {
 
         {/* Photo orb — frameless centerpiece floating in the well the three
             neighbouring cards curve around (desktop). No card surface. */}
-        <Cell area="orb">
+        <Cell variants={cellVariants} area="orb">
           <div className="flex h-full w-full items-center justify-center">
-            <PhotoOrb />
+            <PhotoOrb progress={chargeProgress} />
           </div>
         </Cell>
 
         {/* Skills — tall right rail */}
-        <Cell area="skills">
+        <Cell variants={cellVariants} area="skills">
           <BentoCard
             onClick={() => setActive("skills")}
             label="Open Skills details"
@@ -219,7 +242,7 @@ export default function BentoGrid() {
         </Cell>
 
         {/* Stat — years of experience */}
-        <Cell area="stat">
+        <Cell variants={cellVariants} area="stat">
           <BentoCard
             onClick={() => setActive("about")}
             label="Open About details"
@@ -236,7 +259,7 @@ export default function BentoGrid() {
 
         {/* Experience — current role. Top-right edge curves around the orb's
             lower-left; content sits below the arc (desk:justify-end). */}
-        <Cell area="exp">
+        <Cell variants={cellVariants} area="exp">
           <BentoCard
             onClick={() => setActive("experience")}
             label="Open Experience details"
@@ -258,7 +281,7 @@ export default function BentoGrid() {
 
         {/* Projects — featured work. Top-left edge curves around the orb's
             lower-right; content sits below the arc (desk:justify-end). */}
-        <Cell area="projects">
+        <Cell variants={cellVariants} area="projects">
           <BentoCard
             onClick={() => setActive("projects")}
             label="Open Projects details"
@@ -294,7 +317,7 @@ export default function BentoGrid() {
         </Cell>
 
         {/* Contact — CTA */}
-        <Cell area="contact">
+        <Cell variants={cellVariants} area="contact">
           <BentoCard
             onClick={() => setActive("contact")}
             label="Open Contact details"

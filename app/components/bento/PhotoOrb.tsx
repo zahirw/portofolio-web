@@ -5,11 +5,13 @@ import {
   AnimatePresence,
   animate,
   motion,
+  useAnimationFrame,
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
   useTransform,
   type AnimationPlaybackControls,
+  type MotionValue,
 } from "motion/react";
 import { profile } from "@/lib/data";
 import { CodeIcon } from "../icons";
@@ -19,14 +21,28 @@ import ChargeGauge from "./ChargeGauge";
 const CHARGE_S = 1.8; // full hold time, 0 → 1
 const DRAIN_S = 0.7; // release spring-back, 1 → 0 (scaled by progress)
 
+/* Ring-light spin speed, in deg/s — idle ambient scan up to a fast sweep at
+   full charge. Kept as constant angular *velocity* targets (not durations) so
+   interpolating against progress never has to divide by a changing period. */
+const RING_SPEED_IDLE = 360 / 7; // matches the old fixed 7s/rev animation
+const RING_SPEED_FULL = 360 / 1.2;
+
 type PhotoOrbProps = {
   /** Fires once each time the gauge reaches full charge. */
   onCharged?: () => void;
+  /** Optional shared charge progress; when omitted the orb owns its own. */
+  progress?: MotionValue<number>;
 };
 
-export default function PhotoOrb({ onCharged }: PhotoOrbProps) {
+export default function PhotoOrb({
+  onCharged,
+  progress: progressProp,
+}: PhotoOrbProps) {
   const reduce = useReducedMotion();
-  const progress = useMotionValue(0);
+  /* The local value always exists (hooks stay unconditional); the shared one
+     wins when the parent lifts progress to drive siblings (circuit field). */
+  const localProgress = useMotionValue(0);
+  const progress = progressProp ?? localProgress;
   const controls = useRef<AnimationPlaybackControls | null>(null);
   /* Interaction phase lives in a ref (no re-render while charging); `charged`
      is the only state — it mounts the burst visuals (2 renders per cycle). */
@@ -81,6 +97,17 @@ export default function PhotoOrb({ onCharged }: PhotoOrbProps) {
       `drop-shadow(0 0 ${5 + v * 20}px color-mix(in oklab, var(--color-accent) 90%, transparent)) brightness(${1 + v})`,
   );
 
+  /* Ring-light rotation, driven frame-by-frame off the live charge value
+     instead of a fixed-duration CSS animation — so its spin speed tracks the
+     gauge continuously (idle → full) rather than jumping between presets. */
+  const ringRotation = useMotionValue(0);
+  useAnimationFrame((_, delta) => {
+    if (reduce) return;
+    const speed =
+      RING_SPEED_IDLE + progress.get() * (RING_SPEED_FULL - RING_SPEED_IDLE);
+    ringRotation.set(ringRotation.get() - speed * (delta / 1000));
+  });
+
   return (
     <div className="relative mx-auto flex aspect-square w-full max-w-[320px] items-center justify-center desk:w-(--orb-d) desk:max-w-(--orb-d)">
       {/* Blue → violet glow behind the orb. */}
@@ -125,11 +152,14 @@ export default function PhotoOrb({ onCharged }: PhotoOrbProps) {
 
       {/* Inner rotating light — a blue→violet comet of light circling the
           emblem (replaces the dashed dot ring). Conic gradient masked into a
-          thin ring band, spun by `animate-ring-light`; blur + screen blend
-          make the sweeping head read as glowing light rather than a hard arc. */}
-      <div
+          thin ring band; `ringRotation` spins it at a speed tied to the
+          charge gauge (see the useAnimationFrame loop above), so it sweeps
+          faster the closer the hold gets to full. Blur + screen blend make
+          the sweeping head read as glowing light rather than a hard arc. */}
+      <motion.div
         aria-hidden="true"
-        className="ring-light pointer-events-none absolute inset-0 animate-ring-light blur-[2px] mix-blend-screen motion-reduce:animate-none"
+        className="ring-light pointer-events-none absolute inset-0 blur-[2px] mix-blend-screen"
+        style={{ rotate: ringRotation }}
       />
 
       {/* Hold-to-charge gauge, nested inside the light ring. */}
