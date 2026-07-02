@@ -45,9 +45,14 @@
   --animate-drift-2: drift-2 26s ease-in-out infinite;
   --animate-drift-3: drift-3 23s ease-in-out infinite;
 
-  /* Rotating tech text ring around the photo orb. */
-  --animate-ring-spin: ring-spin 24s linear infinite;
+  /* Counter-rotating dashed dot rings around the photo orb (same 30s speed). */
+  --animate-ring-spin: ring-spin 30s linear infinite;
   --animate-ring-spin-rev: ring-spin-rev 30s linear infinite;
+  /* Sweep of light circling the photo orb — an energetic HUD scan. */
+  --animate-ring-light: ring-spin-rev 7s linear infinite;
+  /* Flickering fire behind the orb emblem (blazing hold-to-charge feedback). */
+  --animate-fire-core: fire-core 0.3s ease-in-out infinite;
+  --animate-fire-lick: fire-lick 0.42s ease-in-out infinite;
   /* Animated conic border sweep for feature cards. */
   --animate-border-spin: border-spin 6s linear infinite;
 }
@@ -235,6 +240,65 @@ body {
   );
 }
 
+/* Rotating light sweep circling the photo orb (replaces the dashed dot ring).
+   A conic gradient with TWO short (45°) bright blue→violet "comet" arcs sitting
+   180° apart, over a fully transparent rest — masked into a thin annulus. The
+   element is spun by `animate-ring-light`, so both comets sweep around the
+   emblem in sync like a HUD scan. Pair with blur + screen blend for a glow. */
+@utility ring-light {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 67.5deg,
+    color-mix(in oklab, var(--color-accent) 35%, transparent) 77.5deg,
+    var(--color-accent-strong) 90deg,
+    color-mix(in oklab, var(--color-accent-2-strong) 90%, transparent) 100deg,
+    transparent 112.5deg,
+    transparent 247.5deg,
+    color-mix(in oklab, var(--color-accent) 35%, transparent) 257.5deg,
+    var(--color-accent-strong) 270deg,
+    color-mix(in oklab, var(--color-accent-2-strong) 90%, transparent) 280deg,
+    transparent 292.5deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+  mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+}
+
+/* Faint full-circle track the comet sweeps along — a misty ring so the light's
+   path stays visible all the way around, not just under the bright head. Same
+   thin annulus band as ring-light, filled with a uniform low blue→violet tone;
+   opacity + blur on the element give it the hazy, fog-like quality. */
+@utility ring-track {
+  background: color-mix(in oklab, var(--color-accent) 50%, var(--color-accent-2));
+  -webkit-mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+  mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+}
+
 /* Faint dotted "circuit board" texture for decorative corners. */
 @utility dot-grid {
   background-image: radial-gradient(
@@ -315,6 +379,51 @@ body {
 @keyframes ring-spin-rev {
   to {
     transform: rotate(-360deg);
+  }
+}
+
+/* ---------- Fire flicker keyframes ---------- */
+/* Fast, jumpy scaling pulse for the hot core. */
+@keyframes fire-core {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  30% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+  55% {
+    transform: scale(0.88);
+    opacity: 0.55;
+  }
+  80% {
+    transform: scale(1.09);
+    opacity: 0.92;
+  }
+}
+
+/* Flame tongues licking wildly — big vertical stretch + rise plus side-to-side
+   sway, anchored at bottom (transform-origin set on the element) so they whip
+   like real flames. */
+@keyframes fire-lick {
+  0%,
+  100% {
+    transform: translate(-5%, 12%) scaleY(0.78) scaleX(1.08);
+    opacity: 0.3;
+  }
+  30% {
+    transform: translate(4%, -14%) scaleY(1.5) scaleX(0.86);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(-3%, -4%) scaleY(1.12) scaleX(1.04);
+    opacity: 0.55;
+  }
+  80% {
+    transform: translate(5%, -10%) scaleY(1.36) scaleX(0.9);
+    opacity: 0.88;
   }
 }
 
