@@ -136,7 +136,7 @@ export default function BentoGrid() {
               <MapPinIcon className="size-[1.15em]" />
               {profile.location}
             </p>
-            <h1 className="m-0 bg-[linear-gradient(115deg,#0f1b2d_25%,var(--color-accent)_75%,var(--color-accent-2)_105%)] bg-clip-text text-[clamp(2rem,6vw,3.4rem)] font-extrabold leading-[1.05] text-transparent">
+            <h1 className="m-0 bg-[linear-gradient(115deg,var(--color-fg)_25%,var(--color-accent)_75%,var(--color-accent-2)_105%)] bg-clip-text text-[clamp(2rem,6vw,3.4rem)] font-extrabold leading-[1.05] text-transparent">
               {profile.name}
             </h1>
             <p className="m-0 mt-2 text-[clamp(1rem,2.5vw,1.35rem)] font-semibold text-accent-strong">
@@ -278,7 +278,7 @@ export default function BentoGrid() {
               {projects.map((project) => (
                 <span
                   key={project.name}
-                  className="relative aspect-square w-full max-w-[3.2rem] overflow-hidden rounded-lg border border-white/70 bg-accent-soft"
+                  className="relative aspect-square w-full max-w-[3.2rem] overflow-hidden rounded-lg border border-white/10 bg-accent-soft"
                 >
                   <Image
                     src={project.thumbnail}
@@ -303,7 +303,7 @@ export default function BentoGrid() {
             <span className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-accent-strong">
               Let&apos;s talk
             </span>
-            <span className="inline-flex items-center gap-2 self-start rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-accent-2))] px-5 py-2.5 font-semibold text-white shadow-[0_12px_26px_-10px_rgba(37,99,235,0.75)] transition-transform group-hover:-translate-y-0.5">
+            <span className="inline-flex items-center gap-2 self-start rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-accent-2))] px-5 py-2.5 font-semibold text-white shadow-[0_12px_26px_-10px_rgba(74,158,255,0.55)] transition-transform group-hover:-translate-y-0.5">
               <SendIcon />
               Get in touch
             </span>

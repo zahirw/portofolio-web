@@ -115,10 +115,10 @@ export function ExperienceContent() {
       {experiences.map((job) => (
         <li
           key={job.company}
-          className="relative grid grid-cols-[auto_1fr] gap-5 [&:not(:last-child)]:before:absolute [&:not(:last-child)]:before:-bottom-5 [&:not(:last-child)]:before:left-[7px] [&:not(:last-child)]:before:top-8 [&:not(:last-child)]:before:w-0.5 [&:not(:last-child)]:before:bg-[linear-gradient(var(--color-accent-soft),transparent)] [&:not(:last-child)]:before:content-['']"
+          className="relative grid grid-cols-[auto_1fr] gap-5 [&:not(:last-child)]:before:absolute [&:not(:last-child)]:before:-bottom-5 [&:not(:last-child)]:before:left-[7px] [&:not(:last-child)]:before:top-8 [&:not(:last-child)]:before:w-0.5 [&:not(:last-child)]:before:bg-[linear-gradient(rgba(123,180,255,0.35),transparent)] [&:not(:last-child)]:before:content-['']"
         >
           <div
-            className="relative z-[1] mt-6 h-4 w-4 rounded-full bg-accent shadow-[0_0_0_5px_rgba(37,99,235,0.15)]"
+            className="relative z-[1] mt-6 h-4 w-4 rounded-full bg-accent shadow-[0_0_0_5px_rgba(74,158,255,0.2)]"
             aria-hidden="true"
           />
           <div className="glass rounded-[18px] px-[1.6rem] py-[1.4rem]">
@@ -152,7 +152,7 @@ export function ProjectsContent() {
           key={project.name}
           className="group relative flex flex-col overflow-hidden rounded-[18px] glass"
         >
-          <div className="relative aspect-video overflow-hidden border-b border-white/70 bg-accent-soft">
+          <div className="relative aspect-video overflow-hidden border-b border-white/10 bg-accent-soft">
             <Image
               src={project.thumbnail}
               alt={`${project.name} preview`}
@@ -202,10 +202,10 @@ export function ContactContent() {
 
       <a
         href={`mailto:${profile.email}`}
-        className="group flex items-center gap-[0.9rem] rounded-xl border border-white/70 bg-white/50 px-5 py-4 no-underline transition hover:-translate-y-0.5 hover:border-accent"
+        className="group flex items-center gap-[0.9rem] rounded-xl border border-white/10 bg-white/5 px-5 py-4 no-underline transition hover:-translate-y-0.5 hover:border-accent"
       >
         <span
-          className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/70 bg-white/72 text-[1.15rem] text-accent-strong transition-colors group-hover:border-accent group-hover:text-accent"
+          className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[1.15rem] text-accent-strong transition-colors group-hover:border-accent group-hover:text-accent"
           aria-hidden="true"
         >
           <MailIcon />

@@ -96,7 +96,7 @@ export default function Modal({
           transition={{ duration: 0.2 }}
         >
           <div
-            className="absolute inset-0 bg-[rgba(15,27,45,0.5)] backdrop-blur-sm"
+            className="absolute inset-0 bg-[rgba(3,6,14,0.7)] backdrop-blur-sm"
             onClick={onClose}
             aria-hidden="true"
           />
@@ -106,7 +106,7 @@ export default function Modal({
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="glass-strong gradient-border relative z-10 max-h-[90vh] w-full max-w-[42rem] overflow-y-auto rounded-t-3xl border border-white/70 shadow-[0_30px_80px_-20px_rgba(23,54,106,0.5)] tab:rounded-3xl"
+            className="glass-strong gradient-border relative z-10 max-h-[90vh] w-full max-w-[42rem] overflow-y-auto rounded-t-3xl border border-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] tab:rounded-3xl"
             initial={
               reduce ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.98 }
             }
@@ -122,7 +122,7 @@ export default function Modal({
               className="dot-grid pointer-events-none absolute right-0 top-0 h-28 w-28 opacity-60 [mask-image:radial-gradient(circle_at_top_right,#000,transparent_70%)]"
             />
 
-            <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-white/50 bg-white/40 px-6 py-5 backdrop-blur-md tab:px-8">
+            <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-white/10 bg-white/3 px-6 py-5 backdrop-blur-md tab:px-8">
               <div>
                 {eyebrow ? (
                   <p className="m-0 mb-1 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-strong">
@@ -146,7 +146,7 @@ export default function Modal({
                 type="button"
                 onClick={onClose}
                 aria-label="Close dialog"
-                className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/70 bg-white/60 text-[1.15rem] text-fg transition hover:border-accent hover:text-accent-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[1.15rem] text-fg transition hover:border-accent hover:text-accent-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
               >
                 <CloseIcon />
               </button>

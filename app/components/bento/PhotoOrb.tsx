@@ -55,7 +55,7 @@ export default function PhotoOrb() {
       </svg>
 
       {/* Portrait. */}
-      <div className="relative aspect-square w-[70%] overflow-hidden rounded-full border border-white/70 bg-white/40 p-1.5 shadow-[0_22px_55px_-18px_rgba(23,54,106,0.55)]">
+      <div className="relative aspect-square w-[70%] overflow-hidden rounded-full border border-white/10 bg-white/5 p-1.5 shadow-[0_22px_55px_-18px_rgba(0,0,0,0.65)]">
         <div className="relative h-full w-full overflow-hidden rounded-full">
           <Image
             src={profile.photo}
