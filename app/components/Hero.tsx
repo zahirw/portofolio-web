@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "motion/react";
 import { profile } from "@/lib/data";
 import { ArrowRightIcon, SendIcon, DownloadIcon } from "./icons";
@@ -28,11 +29,12 @@ export default function Hero() {
   return (
     <section id="top" className="pt-24 pb-18">
       <motion.div
-        className="mx-auto w-full max-w-[65rem] px-6"
+        className="mx-auto grid w-full max-w-[65rem] items-center gap-10 px-6 tab:grid-cols-[1fr_minmax(280px,340px)] tab:gap-14"
         variants={reduce ? undefined : container}
         initial={reduce ? undefined : "hidden"}
         animate={reduce ? undefined : "show"}
       >
+        <div>
         <motion.p
           variants={variants}
           className="font-mono uppercase tracking-[0.14em] text-[0.72rem] text-accent-strong m-0 mb-3"
@@ -92,6 +94,30 @@ export default function Hero() {
             </li>
           ))}
         </motion.ul>
+        </div>
+
+        <motion.div
+          variants={variants}
+          className="relative order-first mx-auto w-full max-w-[280px] tab:order-0 tab:max-w-none"
+        >
+          {/* Decorative accent glow behind the portrait */}
+          <div
+            aria-hidden
+            className="absolute -inset-4 -z-10 rounded-4xl bg-[radial-gradient(120%_120%_at_70%_10%,rgba(37,99,235,0.35),transparent_60%)] blur-2xl"
+          />
+          <div className="relative aspect-4/5 overflow-hidden rounded-[1.75rem] glass p-1.5">
+            <div className="relative h-full w-full overflow-hidden rounded-[1.4rem]">
+              <Image
+                src={profile.photo}
+                alt={`${profile.name} — ${profile.role}`}
+                fill
+                priority
+                sizes="(min-width: 720px) 340px, 280px"
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </motion.div>
       </motion.div>
     </section>
   );

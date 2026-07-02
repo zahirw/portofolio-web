@@ -43,6 +43,9 @@ export const profile = {
     "Frontend Developer with 4+ years of experience building responsive, scalable, and user-centric web and mobile applications across fintech, blockchain, and government projects. Proficient in React, Vue, Next.js, TypeScript, and RESTful API integration. Passionate about clean code, intuitive UI/UX, and continuous learning.",
   // Zahir will place Zahir_CV.pdf in /public.
   cvUrl: "/Zahir_CV.pdf",
+  // Hero portrait. Placeholder for now — drop a real photo at /public/zahir.jpg
+  // (portrait orientation, ~4:5 works best) and change this to "/zahir.jpg".
+  photo: "/zahir.svg",
   stats: [
     { value: "4+", label: "Years experience" },
     { value: "3", label: "Featured projects" },
