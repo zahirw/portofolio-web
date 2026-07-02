@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Betapass thumbnail">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#14336e"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#bg)"/>
+  <circle cx="520" cy="70" r="160" fill="#ffffff" opacity="0.06"/>
+  <circle cx="90" cy="300" r="120" fill="#ffffff" opacity="0.05"/>
+  <text x="40" y="180" font-family="'Segoe UI', system-ui, sans-serif" font-size="52" font-weight="700" fill="#ffffff">Betapass</text>
+  <text x="40" y="220" font-family="'Courier New', monospace" font-size="20" fill="#dbe7ff">SSO &amp; Dashboard</text>
+</svg>

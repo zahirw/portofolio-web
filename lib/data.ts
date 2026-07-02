@@ -20,6 +20,9 @@ export type Project = {
   tagline: string;
   stack: string[];
   description: string;
+  // Path (in /public) to the card thumbnail. Swap the placeholder SVGs in
+  // /public/projects for real screenshots when available.
+  thumbnail: string;
 };
 
 export type SocialLink = {
@@ -40,6 +43,9 @@ export const profile = {
     "Frontend Developer with 4+ years of experience building responsive, scalable, and user-centric web and mobile applications across fintech, blockchain, and government projects. Proficient in React, Vue, Next.js, TypeScript, and RESTful API integration. Passionate about clean code, intuitive UI/UX, and continuous learning.",
   // Zahir will place Zahir_CV.pdf in /public.
   cvUrl: "/Zahir_CV.pdf",
+  // Hero portrait. Placeholder for now — drop a real photo at /public/zahir.jpg
+  // (portrait orientation, ~4:5 works best) and change this to "/zahir.jpg".
+  photo: "/zahir.svg",
   stats: [
     { value: "4+", label: "Years experience" },
     { value: "3", label: "Featured projects" },
@@ -125,6 +131,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "React", "TypeScript"],
     description:
       "Single sign-on platform and dashboard built with Next.js, integrating secure login and user management.",
+    thumbnail: "/projects/betapass.svg",
   },
   {
     name: "Entri Ticketing",
@@ -132,6 +139,7 @@ export const projects: Project[] = [
     stack: ["React Native", "Blockchain", "NFT"],
     description:
       "Mobile ticketing app built with React Native, integrating NFT-based ticket validation.",
+    thumbnail: "/projects/entri-ticketing.svg",
   },
   {
     name: "SIPKONS",
@@ -139,6 +147,7 @@ export const projects: Project[] = [
     stack: ["Vue.js", "CMS"],
     description:
       "Government housing system built with Vue.js, featuring custom CMS capabilities.",
+    thumbnail: "/projects/sipkons.svg",
   },
 ];
 

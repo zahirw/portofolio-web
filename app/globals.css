@@ -1,42 +1,58 @@
 @import "tailwindcss";
 
 /*
- * PHASE 2 — HIGH FIDELITY · Modern Glass (light + blue)
- * Glassmorphism cards, soft gradient background, blurred blobs, blue accent.
- * Class names match Phase 1 markup; Phase 3 will layer animation on top.
+ * Modern Glass (dark + blue/violet/orange) — Tailwind v4.
+ * Design tokens live in @theme (auto-generate color/animation/breakpoint utilities).
+ * Global base rules + blob keyframes stay here; repeated patterns are @utility.
+ * Everything section-specific is expressed as inline utilities in the components.
  */
 
-@theme inline {
+@theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Surface — deep near-black navy, cool light text. */
+  --color-bg: #0a0e17;
+  --color-fg: #e8ecf4;
+  --color-muted: #a3adbf;
+  --color-muted-2: #6b7688;
+
+  /* Accent (blue) — brightened so it reads on the dark surface.
+     "strong" is now LIGHTER than the base (the reverse of a light theme),
+     since it lands as text/icons on dark cards. */
+  --color-accent: #4a9eff;
+  --color-accent-strong: #7bb4ff;
+  --color-accent-soft: #16233d;
+  --color-accent-ink: #cfe0ff;
+
+  /* Secondary accent (violet) — the "sense of technology" partner to blue. */
+  --color-accent-2: #8b7cf0;
+  --color-accent-2-strong: #a394ff;
+  --color-accent-2-soft: #1c1836;
+
+  /* Tertiary accent (warm orange) — the reference's Python/flow warmth,
+     woven in only as ambient glow + the sweeping modal border. */
+  --color-accent-3: #ff8c42;
+  --color-accent-3-strong: #ffa05c;
+  --color-accent-3-soft: #2a1a0f;
+
+  /* Site uses 720px / 960px, not Tailwind's default sm/md/lg. */
+  --breakpoint-tab: 720px;
+  --breakpoint-desk: 960px;
+
+  /* Decorative blob drift */
+  --animate-drift-1: drift-1 20s ease-in-out infinite;
+  --animate-drift-2: drift-2 26s ease-in-out infinite;
+  --animate-drift-3: drift-3 23s ease-in-out infinite;
+
+  /* Flickering fire behind the orb emblem (blazing hold-to-charge feedback). */
+  --animate-fire-core: fire-core 0.3s ease-in-out infinite;
+  --animate-fire-lick: fire-lick 0.42s ease-in-out infinite;
+  /* Animated conic border sweep for feature cards. */
+  --animate-border-spin: border-spin 6s linear infinite;
 }
 
-:root {
-  /* Surface */
-  --bg: #eef3fb;
-  --fg: #0f1b2d;
-  --muted: #4a5a70;
-  --muted-2: #6b7a90;
-  --line: rgba(43, 82, 145, 0.14);
-
-  /* Accent (blue) */
-  --accent: #2563eb;
-  --accent-strong: #1d4ed8;
-  --accent-soft: #dbe7ff;
-  --accent-ink: #14336e;
-
-  /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.55);
-  --glass-bg-strong: rgba(255, 255, 255, 0.72);
-  --glass-border: rgba(255, 255, 255, 0.7);
-  --glass-shadow: 0 10px 30px -12px rgba(23, 54, 106, 0.28);
-  --glass-shadow-hover: 0 20px 45px -14px rgba(23, 54, 106, 0.38);
-
-  --radius: 18px;
-  --radius-sm: 12px;
-  --maxw: 1040px;
-}
-
+/* ---------- Base ---------- */
 * {
   box-sizing: border-box;
 }
@@ -47,99 +63,277 @@ html {
 
 body {
   margin: 0;
-  color: var(--fg);
+  color: var(--color-fg);
   font-family: var(--font-sans), system-ui, sans-serif;
   line-height: 1.65;
   background:
-    radial-gradient(1200px 600px at 12% -10%, #ffffff 0%, transparent 55%),
-    linear-gradient(160deg, #eff4fc 0%, #e6eefb 45%, #eaf1fb 100%);
+    radial-gradient(1200px 600px at 15% -10%, rgba(74, 158, 255, 0.12) 0%, transparent 55%),
+    radial-gradient(900px 700px at 85% 5%, rgba(139, 124, 240, 0.1) 0%, transparent 55%),
+    radial-gradient(700px 600px at 70% 100%, rgba(255, 140, 66, 0.06) 0%, transparent 60%),
+    linear-gradient(160deg, #0a0e17 0%, #070a11 50%, #0a0e18 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-a {
-  color: inherit;
+/* ---------- Reusable pieces (@utility) ---------- */
+
+/* Glassmorphism surfaces used across nav, cards, panels. */
+@utility glass {
+  background: rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55);
 }
 
-h1,
-h2,
-h3 {
-  line-height: 1.15;
-  margin: 0;
-  letter-spacing: -0.02em;
+@utility glass-strong {
+  background: rgba(16, 20, 30, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
 }
 
-ul,
-ol {
-  margin: 0;
+/* Pill buttons. */
+@utility btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: 999px;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+@utility btn {
+  &:hover {
+    transform: translateY(-2px);
+  }
 }
 
-.container {
-  width: 100%;
-  max-width: var(--maxw);
-  margin: 0 auto;
-  padding: 0 1.5rem;
+@utility btn-primary {
+  background: var(--color-accent);
+  color: #fff;
+  box-shadow: 0 12px 26px -10px rgba(74, 158, 255, 0.6);
+  &:hover {
+    background: var(--color-accent-strong);
+    box-shadow: 0 20px 45px -14px rgba(0, 0, 0, 0.5);
+  }
 }
 
-.muted {
-  color: var(--muted);
+@utility btn-secondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-fg);
+  border-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  &:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent-strong);
+  }
 }
 
-.eyebrow {
+/* Mono pill badge. */
+@utility tag {
   font-family: var(--font-mono), monospace;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: 0.72rem;
-  color: var(--accent-strong);
-  margin: 0 0 0.75rem;
+  border: 1px solid rgba(122, 162, 255, 0.2);
+  background: rgba(122, 162, 255, 0.08);
+  color: var(--color-accent-ink);
+  border-radius: 999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.76rem;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
 }
 
-/* ---------- Decorative background ---------- */
-.bg-decor {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
+/* Glass icon chip beside each section title. Kept as a utility because its
+   em-cascade (font-size 0.72em drives the em width/padding + content-box) does
+   not survive Tailwind's arbitrary `text-[…em]` / `p-[…em]` utilities. */
+@utility title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3em;
+  height: 1.3em;
+  font-size: 0.95em;
+  color: var(--color-accent-strong);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 0.3em;
+  box-sizing: content-box;
 }
 
-.blob {
+/* Masked dual-gradient grid overlay (background decor). */
+@utility grid-overlay {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.55;
-  will-change: transform;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(122, 162, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122, 162, 255, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: radial-gradient(1000px 700px at 50% 0%, #000 0%, transparent 75%);
 }
 
-.blob-1 {
-  width: 520px;
-  height: 520px;
-  top: -160px;
-  right: -120px;
-  background: radial-gradient(circle, #7db0ff, transparent 70%);
-  animation: drift-1 20s ease-in-out infinite;
+/* ---------- Bento (tech glass) pieces ---------- */
+
+/* Bento card surface. Glass + rounded, with a blue→violet glow that intensifies
+   on hover/focus. Clickable cards render as <button> and get -translate-y lift. */
+@utility bento-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.055),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.55);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
-.blob-2 {
-  width: 460px;
-  height: 460px;
-  top: 40%;
-  left: -180px;
-  background: radial-gradient(circle, #b3d0ff, transparent 70%);
-  animation: drift-2 26s ease-in-out infinite;
+/* Interactive variant: clickable cards lift + glow. */
+@utility bento-card-btn {
+  cursor: pointer;
+  text-align: left;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--color-accent) 55%, transparent);
+    box-shadow:
+      0 24px 50px -18px rgba(0, 0, 0, 0.6),
+      0 0 0 1px color-mix(in oklab, var(--color-accent-2) 30%, transparent),
+      0 0 48px -6px color-mix(in oklab, var(--color-accent-2) 45%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }
 
-.blob-3 {
-  width: 420px;
-  height: 420px;
-  bottom: -160px;
-  right: 10%;
-  background: radial-gradient(circle, #9ec6ff, transparent 70%);
-  opacity: 0.4;
-  animation: drift-3 23s ease-in-out infinite;
+/* Radial blue→violet glow, placed behind hero elements (orb, accents). */
+@utility glow {
+  background: radial-gradient(
+    60% 60% at 60% 30%,
+    color-mix(in oklab, var(--color-accent) 55%, transparent),
+    color-mix(in oklab, var(--color-accent-2) 40%, transparent) 55%,
+    transparent 75%
+  );
 }
 
+/* Rotating light sweep circling the photo orb (replaces the dashed dot ring).
+   A conic gradient with TWO short (45°) bright blue→violet "comet" arcs sitting
+   180° apart, over a fully transparent rest — masked into a thin annulus. The
+   element is spun by `animate-ring-light`, so both comets sweep around the
+   emblem in sync like a HUD scan. Pair with blur + screen blend for a glow. */
+@utility ring-light {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 67.5deg,
+    color-mix(in oklab, var(--color-accent) 35%, transparent) 77.5deg,
+    var(--color-accent-strong) 90deg,
+    color-mix(in oklab, var(--color-accent-2-strong) 90%, transparent) 100deg,
+    transparent 112.5deg,
+    transparent 247.5deg,
+    color-mix(in oklab, var(--color-accent) 35%, transparent) 257.5deg,
+    var(--color-accent-strong) 270deg,
+    color-mix(in oklab, var(--color-accent-2-strong) 90%, transparent) 280deg,
+    transparent 292.5deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+  mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+}
+
+/* Faint full-circle track the comet sweeps along — a misty ring so the light's
+   path stays visible all the way around, not just under the bright head. Same
+   thin annulus band as ring-light, filled with a uniform low blue→violet tone;
+   opacity + blur on the element give it the hazy, fog-like quality. */
+@utility ring-track {
+  background: color-mix(in oklab, var(--color-accent) 50%, var(--color-accent-2));
+  -webkit-mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+  mask: radial-gradient(
+    closest-side,
+    transparent 70%,
+    #000 72.5%,
+    #000 73.5%,
+    transparent 76%
+  );
+}
+
+/* Faint dotted "circuit board" texture for decorative corners. */
+@utility dot-grid {
+  background-image: radial-gradient(
+    rgba(122, 162, 255, 0.12) 1px,
+    transparent 1px
+  );
+  background-size: 14px 14px;
+}
+
+/* Animated conic blue→violet border for feature cards (orb / identity).
+   Rendered as a masked pseudo-border so the card fill stays glassy. */
+@utility gradient-border {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--border-angle),
+      transparent 0deg,
+      var(--color-accent) 80deg,
+      var(--color-accent-2) 160deg,
+      var(--color-accent-3) 220deg,
+      transparent 320deg
+    );
+    animation: var(--animate-border-spin);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/* ---------- Blob drift keyframes ---------- */
 @keyframes drift-1 {
   0%,
   100% {
@@ -170,607 +364,250 @@ ol {
   }
 }
 
-.grid-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(37, 99, 235, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(37, 99, 235, 0.04) 1px, transparent 1px);
-  background-size: 44px 44px;
-  mask-image: radial-gradient(1000px 700px at 50% 0%, #000 0%, transparent 75%);
+/* ---------- Fire flicker keyframes ---------- */
+/* Fast, jumpy scaling pulse for the hot core. */
+@keyframes fire-core {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  30% {
+    transform: scale(1.18);
+    opacity: 1;
+  }
+  55% {
+    transform: scale(0.88);
+    opacity: 0.55;
+  }
+  80% {
+    transform: scale(1.09);
+    opacity: 0.92;
+  }
 }
 
-/* ---------- Glass utility ---------- */
-.glass {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  box-shadow: var(--glass-shadow);
+/* Flame tongues licking wildly — big vertical stretch + rise plus side-to-side
+   sway, anchored at bottom (transform-origin set on the element) so they whip
+   like real flames. */
+@keyframes fire-lick {
+  0%,
+  100% {
+    transform: translate(-5%, 12%) scaleY(0.78) scaleX(1.08);
+    opacity: 0.3;
+  }
+  30% {
+    transform: translate(4%, -14%) scaleY(1.5) scaleX(0.86);
+    opacity: 1;
+  }
+  55% {
+    transform: translate(-3%, -4%) scaleY(1.12) scaleX(1.04);
+    opacity: 0.55;
+  }
+  80% {
+    transform: translate(5%, -10%) scaleY(1.36) scaleX(0.9);
+    opacity: 0.88;
+  }
 }
 
-/* ---------- Nav ---------- */
-.nav {
-  position: sticky;
-  top: 0.75rem;
-  z-index: 20;
-  margin: 0.75rem auto 0;
-  max-width: calc(var(--maxw) + 1.5rem);
-  padding: 0 0.75rem;
+@keyframes border-spin {
+  to {
+    --border-angle: 360deg;
+  }
 }
 
-.nav-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.7rem 1.1rem;
-  border-radius: 999px;
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  box-shadow: var(--glass-shadow);
+/* ---------- Circuit field (radiating PCB traces) ---------- */
+/* Overlay of traces radiating from the orb center across the whole grid
+   (CircuitField.tsx). The base lines are a permanent ambient backdrop; the
+   node pads and the traveling light pulses stay invisible until the orb is
+   pressed, then scale with --lvl, the live hold-to-charge progress the
+   component writes as the orb charges/drains. Pulses only animate while any
+   charge is present ([data-active], set whenever --lvl > 0) and restart from
+   the center on every fresh press; on release they keep flowing as the field
+   drains out. */
+.circuit-field {
+  --lvl: 0;
+  /* Every trace starts at the SVG's own center (0,0 in its centered
+     viewBox), which sits under the orb — so mask that origin out and fade
+     the whole field in just past it, rather than letting lines cut across
+     the portrait. Radius mirrors --well-r's formula (orb radius + 14px) and
+     inherits the live --orb-d from .bento at desk:; the fallback covers
+     mobile/tablet, where the orb is smaller and --orb-d is unset. The fade
+     band is kept tight (24px): a wide feather would swallow the traveling
+     pulses until well past the orb, making them seem to spawn mid-path
+     instead of emerging right at the orb's rim. */
+  --fade-r: calc(var(--orb-d, 300px) / 2 + 14px);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 0,
+    transparent var(--fade-r),
+    #000 calc(var(--fade-r) + 24px)
+  );
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent 0,
+    transparent var(--fade-r),
+    #000 calc(var(--fade-r) + 24px)
+  );
 }
 
-.nav-brand {
-  font-weight: 700;
-  text-decoration: none;
-  letter-spacing: -0.01em;
+/* Always-on faint trace lines — a permanent PCB backdrop, independent of
+   charge state. */
+.circuit-field .circuit-base {
+  opacity: 0.16;
 }
 
-.nav-links {
-  display: none;
-  gap: 1.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.nav-links a {
-  text-decoration: none;
-  font-size: 0.92rem;
-  color: var(--muted);
-  transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: var(--accent-strong);
-}
-
-.nav-links a.is-active {
-  color: var(--accent-strong);
-  font-weight: 600;
-}
-
-.nav-cta {
-  background: var(--accent);
-  color: #fff;
-  padding: 0.5rem 1.1rem;
-  border-radius: 999px;
-  text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 600;
-  white-space: nowrap;
-  box-shadow: 0 8px 18px -8px rgba(37, 99, 235, 0.7);
-  transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.nav-cta:hover {
-  background: var(--accent-strong);
-  transform: translateY(-1px);
-}
-
-/* ---------- Sections ---------- */
-.section {
-  padding: 4.5rem 0;
-}
-
-.section-head {
-  margin-bottom: 2.25rem;
-}
-
-.section-title {
-  font-size: clamp(1.75rem, 4vw, 2.4rem);
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.65rem;
-  padding-bottom: 0.6rem;
-}
-
-.section-title-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.15em;
-  height: 1.15em;
-  font-size: 0.72em;
-  color: var(--accent-strong);
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 0.42em;
-  box-sizing: content-box;
-}
-
-.section-title::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 48px;
-  height: 3px;
-  border-radius: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-}
-
-/* ---------- Hero ---------- */
-.hero {
-  padding: 6rem 0 4.5rem;
-}
-
-.hero-name {
-  font-size: clamp(2.75rem, 8vw, 5rem);
-  font-weight: 800;
-  background: linear-gradient(135deg, #0f1b2d 30%, #2563eb 120%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  margin: 0.5rem 0;
-}
-
-.hero-role {
-  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-  font-weight: 600;
-  color: var(--accent-strong);
-  margin: 0 0 1.25rem;
-}
-
-.hero-summary {
-  max-width: 640px;
-  font-size: 1.08rem;
-  color: var(--muted);
-  margin: 0 0 2rem;
-}
-
-.hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-  margin-bottom: 2.75rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.4rem;
-  border-radius: 999px;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border: 1px solid transparent;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-}
-
-.btn-primary {
-  background: var(--accent);
-  color: #fff;
-  box-shadow: 0 12px 26px -10px rgba(37, 99, 235, 0.75);
-}
-
-.btn-primary:hover {
-  background: var(--accent-strong);
-  box-shadow: var(--glass-shadow-hover);
-}
-
-.btn-secondary {
-  background: var(--glass-bg-strong);
-  color: var(--fg);
-  border-color: var(--glass-border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.btn-secondary:hover {
-  border-color: var(--accent);
-  color: var(--accent-strong);
-}
-
-.hero-stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.hero-stats li {
-  display: flex;
-  flex-direction: column;
-  padding: 0.9rem 1.4rem;
-  border-radius: var(--radius-sm);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--glass-shadow);
-  min-width: 120px;
-}
-
-.stat-value {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: var(--accent-strong);
-  line-height: 1.1;
-}
-
-.stat-label {
-  font-size: 0.82rem;
-  color: var(--muted);
-}
-
-/* ---------- About ---------- */
-.about-grid {
-  display: grid;
-  gap: 1.75rem;
-}
-
-.about-summary {
-  margin: 0;
-  max-width: 640px;
-  font-size: 1.08rem;
-  color: var(--muted);
-}
-
-.about-aside {
-  display: grid;
-  gap: 1rem;
-}
-
-.about-block {
-  padding: 1.25rem 1.4rem;
-  border-radius: var(--radius-sm);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: var(--glass-shadow);
-}
-
-.about-block h3 {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent-strong);
-  margin-bottom: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-/* Small inline icon used in card/block headings. Sized to the heading text. */
-.block-icon {
-  width: 1.35em;
-  height: 1.35em;
-  flex: none;
-  color: var(--accent);
-}
-
-.about-block p {
-  margin: 0.15rem 0;
-}
-
-.about-block ul {
-  padding-left: 1.1rem;
-  color: var(--muted);
-}
-
-/* ---------- Skills ---------- */
-.skills-grid {
-  display: grid;
-  gap: 1.1rem;
-  grid-template-columns: 1fr;
-}
-
-.skill-card {
-  border-radius: var(--radius);
-  padding: 1.4rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  box-shadow: var(--glass-shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.skill-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--glass-shadow-hover);
-}
-
-.skill-card h3 {
-  font-size: 1.05rem;
-  margin-bottom: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-}
-
-.skill-tags,
-.project-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.tag {
-  font-family: var(--font-mono), monospace;
-  border: 1px solid var(--accent-soft);
-  background: rgba(219, 231, 255, 0.5);
-  color: var(--accent-ink);
-  border-radius: 999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.76rem;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.skill-card:hover .tag {
-  border-color: var(--accent);
-}
-
-/* ---------- Experience (timeline) ---------- */
-.timeline {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: grid;
-  gap: 1.25rem;
-  position: relative;
-}
-
-.timeline-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 1.25rem;
-  position: relative;
-}
-
-.timeline-marker {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
-  margin-top: 1.5rem;
-  position: relative;
-  z-index: 1;
-}
-
-/* connecting line between markers */
-.timeline-item:not(:last-child)::before {
-  content: "";
-  position: absolute;
-  left: 7px;
-  top: 2rem;
-  bottom: -1.25rem;
-  width: 2px;
-  background: linear-gradient(var(--accent-soft), transparent);
-}
-
-.timeline-content {
-  border-radius: var(--radius);
-  padding: 1.4rem 1.6rem;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  box-shadow: var(--glass-shadow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.timeline-content:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--glass-shadow-hover);
-}
-
-.job-role {
-  font-size: 1.2rem;
-}
-
-.job-company {
-  margin: 0.2rem 0;
-  font-weight: 600;
-  color: var(--accent-strong);
-}
-
-.job-meta {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.8rem;
-  color: var(--muted-2);
-  margin: 0 0 0.85rem;
-}
-
-.job-bullets {
-  padding-left: 1.15rem;
-  display: grid;
-  gap: 0.4rem;
-  color: var(--muted);
-}
-
-.job-bullets li::marker {
-  color: var(--accent);
-}
-
-/* ---------- Projects ---------- */
-.projects-grid {
-  display: grid;
-  gap: 1.25rem;
-  grid-template-columns: 1fr;
-}
-
-.project-card {
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  display: grid;
-  gap: 0.9rem;
-  align-content: start;
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  box-shadow: var(--glass-shadow);
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.project-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--accent), transparent);
+/* Node pads only appear while the orb is pressed, brightening with charge. */
+.circuit-field .circuit-nodes {
   opacity: 0;
-  transition: opacity 0.25s ease;
 }
 
-.project-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--glass-shadow-hover);
+.circuit-field[data-active="true"] .circuit-nodes {
+  opacity: calc(var(--lvl) * 0.7);
 }
 
-.project-card:hover::before {
-  opacity: 1;
+.circuit-field .circuit-pulses {
+  opacity: 0;
+  /* The moving light warms toward accent-strong as the charge climbs. */
+  stroke: color-mix(
+    in oklab,
+    var(--color-accent-strong) calc(var(--lvl) * 100%),
+    var(--color-accent)
+  );
+  filter: drop-shadow(
+    0 0 calc(2px + var(--lvl) * 4px)
+      color-mix(in oklab, var(--color-accent) 80%, transparent)
+  );
 }
 
-.project-name {
-  font-size: 1.25rem;
+/* The comet motion itself is SMIL inside CircuitField.tsx (an animateMotion
+   head bead + dash-reveal tail streaks welded on one timeline); the
+   component pauses/rewinds that timeline off the charge state, so the only
+   CSS here is the visibility gate above. Sizes/dimming ride along as
+   presentation attributes. */
+.circuit-field[data-active="true"] .circuit-pulses {
+  opacity: calc(0.35 + var(--lvl) * 0.65);
 }
 
-.project-tagline {
-  margin: 0.15rem 0 0;
-  font-family: var(--font-mono), monospace;
-  color: var(--accent-strong);
-  font-size: 0.82rem;
+/* Registered custom property so the conic gradient angle can animate. */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
 }
 
-.project-desc {
-  margin: 0;
-  color: var(--muted);
-}
-
-/* ---------- Contact ---------- */
-.contact-panel {
-  border-radius: var(--radius);
-  padding: 2rem;
+/* ---------- Bento grid layout ---------- */
+/* Named grid areas so cards can sit anywhere; three breakpoints reflow the
+   same nine cards from a single column → 2 columns → the full 4-column bento. */
+.bento {
+  --gap: 1rem;
+  /* Positioning context for the absolutely-inset circuit field background. */
+  position: relative;
   display: grid;
-  gap: 1.75rem;
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(18px) saturate(160%);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  box-shadow: var(--glass-shadow);
-}
-
-.contact-lead {
-  margin: 0;
-  max-width: 520px;
-  font-size: 1.1rem;
-  color: var(--muted);
-}
-
-.contact-details {
-  display: grid;
-  gap: 1rem;
+  gap: var(--gap);
   grid-template-columns: 1fr;
+  grid-auto-rows: minmax(90px, auto);
+  grid-template-areas:
+    "identity"
+    "orb"
+    "about"
+    "skills"
+    "exp"
+    "projects"
+    "stat"
+    "status"
+    "contact";
 }
 
-.contact-item {
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 1rem 1.25rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.5);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+/* The orb is always a tall, roughly square feature. z-index:5 keeps it above
+   the circuit field (behind every card, z-index:auto) at every breakpoint,
+   so the traces' convergence point stays tucked behind the orb visuals. */
+.bento > [style*="orb"] {
+  min-height: 300px;
+  position: relative;
+  z-index: 5;
 }
 
-.contact-item:hover {
-  transform: translateY(-2px);
-  border-color: var(--accent);
+@media (min-width: 720px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "identity identity"
+      "orb      orb"
+      "about    skills"
+      "exp      projects"
+      "stat     status"
+      "contact  contact";
+  }
+  .bento > [style*="orb"] {
+    min-height: 340px;
+  }
 }
 
-.contact-item-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: 1.15rem;
-  color: var(--accent-strong);
-  background: var(--glass-bg-strong);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  transition: color 0.2s ease, border-color 0.2s ease;
-}
+@media (min-width: 960px) {
+  .bento {
+    /* Orb geometry — the notch masks below depend on these values.
+       There are no dedicated orb rows: identity spans rows 1-2 and
+       exp/projects span rows 3-4, meeting one gap apart. The circular well is
+       carved half out of identity's bottom and half out of exp/projects'
+       inner-top corners, all centered on the same point — the middle of that
+       gap on the grid midline (--half-g past each card's orb-facing edge).
+       The orb element overlaps rows 2-3 so its center lands on that point,
+       which is why rows 2 and 3 must stay identical. */
+    --orb-d: 380px;
+    --well-r: calc(var(--orb-d) / 2 + 14px);
+    --half-g: calc(var(--gap) / 2);
 
-.contact-item:hover .contact-item-icon {
-  color: var(--accent);
-  border-color: var(--accent);
-}
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(170px, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    grid-template-areas:
+      "about   identity identity status"
+      "about   identity identity skills"
+      "stat    exp      projects skills"
+      "contact exp      projects skills";
+  }
 
-.contact-item-text {
-  display: flex;
-  flex-direction: column;
-}
+  /* The orb has no named area at desktop; line-based placement overlaps it
+     onto identity's lower half and exp/projects' upper halves (the carved
+     region). !important beats the inline grid-area:orb the mobile/tablet
+     templates rely on. pointer-events off so the overlap never blocks the
+     exp/projects buttons underneath. */
+  .bento > [style*="orb"] {
+    grid-area: 2 / 2 / 4 / 4 !important;
+    pointer-events: none;
+    overflow: visible;
+    min-height: 0;
+  }
 
-.contact-label {
-  font-family: var(--font-mono), monospace;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent-strong);
-}
+  /* Concave circular cutouts around the center photo. Each mask circle is
+     centered on the orb's center (concentric with the photo), so identity's
+     bottom edge, exp's top-right and projects' top-left trace one continuous
+     ring around it. */
+  .notch-top {
+    -webkit-mask: radial-gradient(circle at 50% calc(100% + var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    mask: radial-gradient(circle at 50% calc(100% + var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+  }
+  .notch-br {
+    -webkit-mask: radial-gradient(circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    mask: radial-gradient(circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+  }
+  .notch-bl {
+    -webkit-mask: radial-gradient(circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    mask: radial-gradient(circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+  }
 
-.contact-value {
-  font-size: 1.08rem;
-  font-weight: 600;
-}
-
-.contact-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
-}
-
-.footer {
-  margin-top: 2.5rem;
-  padding-top: 1.5rem;
-  text-align: center;
-  font-family: var(--font-mono), monospace;
-  font-size: 0.82rem;
-  color: var(--muted-2);
+  /* The tight arc margin makes the hover lift visibly desync the curves from
+     the static orb — keep the glow, drop the translate on notched buttons. */
+  .notch-br:hover,
+  .notch-bl:hover {
+    transform: none;
+  }
 }
 
 /* ---------- Focus states (accessibility) ---------- */
 a:focus-visible,
 .btn:focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 999px;
 }
@@ -786,35 +623,5 @@ a:focus-visible,
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
-  }
-}
-
-/* ---------- Responsive (desktop) ---------- */
-@media (min-width: 720px) {
-  .nav-links {
-    display: flex;
-  }
-
-  .about-grid {
-    grid-template-columns: 1.6fr 1fr;
-    align-items: start;
-  }
-
-  .skills-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .contact-details {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .projects-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 960px) {
-  .skills-grid {
-    grid-template-columns: repeat(3, 1fr);
   }
 }
