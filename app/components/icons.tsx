@@ -152,6 +152,26 @@ export const SendIcon = (p: IconProps) => (
   </Base>
 );
 
+export const CloseIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M18 6 6 18" />
+    <path d="m6 6 12 12" />
+  </Base>
+);
+
+export const MapPinIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </Base>
+);
+
+export const SparkIcon = (p: IconProps) => (
+  <Base {...p}>
+    <path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" />
+  </Base>
+);
+
 // —— Brand logos (filled) ——
 export const GitHubIcon = (p: IconProps) => (
   <svg viewBox="0 0 24 24" width="1em" height="1em" fill="currentColor" aria-hidden="true" {...p}>

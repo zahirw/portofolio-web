@@ -23,6 +23,11 @@
   --color-accent-soft: #dbe7ff;
   --color-accent-ink: #14336e;
 
+  /* Secondary accent (violet) — the "sense of technology" partner to blue. */
+  --color-accent-2: #7c3aed;
+  --color-accent-2-strong: #6d28d9;
+  --color-accent-2-soft: #ede9fe;
+
   /* Site uses 720px / 960px, not Tailwind's default sm/md/lg. */
   --breakpoint-tab: 720px;
   --breakpoint-desk: 960px;
@@ -31,6 +36,12 @@
   --animate-drift-1: drift-1 20s ease-in-out infinite;
   --animate-drift-2: drift-2 26s ease-in-out infinite;
   --animate-drift-3: drift-3 23s ease-in-out infinite;
+
+  /* Rotating tech text ring around the photo orb. */
+  --animate-ring-spin: ring-spin 24s linear infinite;
+  --animate-ring-spin-rev: ring-spin-rev 30s linear infinite;
+  /* Animated conic border sweep for feature cards. */
+  --animate-border-spin: border-spin 6s linear infinite;
 }
 
 /* ---------- Base ---------- */
@@ -163,6 +174,91 @@ body {
   mask-image: radial-gradient(1000px 700px at 50% 0%, #000 0%, transparent 75%);
 }
 
+/* ---------- Bento (tech glass) pieces ---------- */
+
+/* Bento card surface. Glass + rounded, with a blue→violet glow that intensifies
+   on hover/focus. Clickable cards render as <button> and get -translate-y lift. */
+@utility bento-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 10px 30px -12px rgba(23, 54, 106, 0.28);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+/* Interactive variant: clickable cards lift + glow. */
+@utility bento-card-btn {
+  cursor: pointer;
+  text-align: left;
+  &:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
+    box-shadow:
+      0 24px 50px -18px rgba(23, 54, 106, 0.42),
+      0 0 0 1px color-mix(in oklab, var(--color-accent-2) 22%, transparent),
+      0 0 42px -8px color-mix(in oklab, var(--color-accent-2) 40%, transparent);
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+}
+
+/* Radial blue→violet glow, placed behind hero elements (orb, accents). */
+@utility glow {
+  background: radial-gradient(
+    60% 60% at 60% 30%,
+    color-mix(in oklab, var(--color-accent) 55%, transparent),
+    color-mix(in oklab, var(--color-accent-2) 40%, transparent) 55%,
+    transparent 75%
+  );
+}
+
+/* Faint dotted "circuit board" texture for decorative corners. */
+@utility dot-grid {
+  background-image: radial-gradient(
+    rgba(37, 99, 235, 0.14) 1px,
+    transparent 1px
+  );
+  background-size: 14px 14px;
+}
+
+/* Animated conic blue→violet border for feature cards (orb / identity).
+   Rendered as a masked pseudo-border so the card fill stays glassy. */
+@utility gradient-border {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--border-angle),
+      transparent 0deg,
+      var(--color-accent) 90deg,
+      var(--color-accent-2) 180deg,
+      transparent 300deg
+    );
+    animation: var(--animate-border-spin);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
 /* ---------- Blob drift keyframes ---------- */
 @keyframes drift-1 {
   0%,
@@ -191,6 +287,137 @@ body {
   }
   50% {
     transform: translate(-50px, -30px) scale(1.05);
+  }
+}
+
+/* ---------- Tech ring / border keyframes ---------- */
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ring-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes border-spin {
+  to {
+    --border-angle: 360deg;
+  }
+}
+
+/* Registered custom property so the conic gradient angle can animate. */
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* ---------- Bento grid layout ---------- */
+/* Named grid areas so cards can sit anywhere; three breakpoints reflow the
+   same nine cards from a single column → 2 columns → the full 4-column bento. */
+.bento {
+  --gap: 1rem;
+  display: grid;
+  gap: var(--gap);
+  grid-template-columns: 1fr;
+  grid-auto-rows: minmax(90px, auto);
+  grid-template-areas:
+    "identity"
+    "orb"
+    "about"
+    "skills"
+    "exp"
+    "projects"
+    "stat"
+    "status"
+    "contact";
+}
+
+/* The orb is always a tall, roughly square feature. */
+.bento > [style*="orb"] {
+  min-height: 300px;
+}
+
+@media (min-width: 720px) {
+  .bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "identity identity"
+      "orb      orb"
+      "about    skills"
+      "exp      projects"
+      "stat     status"
+      "contact  contact";
+  }
+  .bento > [style*="orb"] {
+    min-height: 340px;
+  }
+}
+
+@media (min-width: 960px) {
+  .bento {
+    /* Orb geometry — the notch masks below depend on these values.
+       There are no dedicated orb rows: identity spans rows 1-2 and
+       exp/projects span rows 3-4, meeting one gap apart. The circular well is
+       carved half out of identity's bottom and half out of exp/projects'
+       inner-top corners, all centered on the same point — the middle of that
+       gap on the grid midline (--half-g past each card's orb-facing edge).
+       The orb element overlaps rows 2-3 so its center lands on that point,
+       which is why rows 2 and 3 must stay identical. */
+    --orb-d: 380px;
+    --well-r: calc(var(--orb-d) / 2 + 14px);
+    --half-g: calc(var(--gap) / 2);
+
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(170px, 1fr));
+    grid-auto-rows: minmax(0, 1fr);
+    grid-template-areas:
+      "about   identity identity status"
+      "about   identity identity skills"
+      "stat    exp      projects skills"
+      "contact exp      projects skills";
+  }
+
+  /* The orb has no named area at desktop; line-based placement overlaps it
+     onto identity's lower half and exp/projects' upper halves (the carved
+     region). !important beats the inline grid-area:orb the mobile/tablet
+     templates rely on. pointer-events off so the overlap never blocks the
+     exp/projects buttons underneath. */
+  .bento > [style*="orb"] {
+    grid-area: 2 / 2 / 4 / 4 !important;
+    position: relative;
+    z-index: 5;
+    pointer-events: none;
+    overflow: visible;
+    min-height: 0;
+  }
+
+  /* Concave circular cutouts around the center photo. Each mask circle is
+     centered on the orb's center (concentric with the photo), so identity's
+     bottom edge, exp's top-right and projects' top-left trace one continuous
+     ring around it. */
+  .notch-top {
+    -webkit-mask: radial-gradient(circle at 50% calc(100% + var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    mask: radial-gradient(circle at 50% calc(100% + var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+  }
+  .notch-br {
+    -webkit-mask: radial-gradient(circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    mask: radial-gradient(circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+  }
+  .notch-bl {
+    -webkit-mask: radial-gradient(circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    mask: radial-gradient(circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+  }
+
+  /* The tight arc margin makes the hover lift visibly desync the curves from
+     the static orb — keep the glow, drop the translate on notched buttons. */
+  .notch-br:hover,
+  .notch-bl:hover {
+    transform: none;
   }
 }
 
