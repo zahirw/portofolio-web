@@ -67,9 +67,21 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
   line-height: 1.65;
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(74, 158, 255, 0.12) 0%, transparent 55%),
-    radial-gradient(900px 700px at 85% 5%, rgba(139, 124, 240, 0.1) 0%, transparent 55%),
-    radial-gradient(700px 600px at 70% 100%, rgba(255, 140, 66, 0.06) 0%, transparent 60%),
+    radial-gradient(
+      1200px 600px at 15% -10%,
+      rgba(74, 158, 255, 0.12) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 700px at 85% 5%,
+      rgba(139, 124, 240, 0.1) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      700px 600px at 70% 100%,
+      rgba(255, 140, 66, 0.06) 0%,
+      transparent 60%
+    ),
     linear-gradient(160deg, #0a0e17 0%, #070a11 50%, #0a0e18 100%);
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
@@ -148,8 +160,8 @@ body {
   background: rgba(122, 162, 255, 0.08);
   color: var(--color-accent-ink);
   border-radius: 999px;
-  padding: 0.25rem 0.75rem;
-  font-size: 0.76rem;
+  padding: 0.4rem 0.95rem;
+  font-size: 0.9rem;
   transition:
     background 0.2s ease,
     border-color 0.2s ease;
@@ -277,7 +289,11 @@ body {
    thin annulus band as ring-light, filled with a uniform low blue→violet tone;
    opacity + blur on the element give it the hazy, fog-like quality. */
 @utility ring-track {
-  background: color-mix(in oklab, var(--color-accent) 50%, var(--color-accent-2));
+  background: color-mix(
+    in oklab,
+    var(--color-accent) 50%,
+    var(--color-accent-2)
+  );
   -webkit-mask: radial-gradient(
     closest-side,
     transparent 70%,
@@ -584,16 +600,40 @@ body {
      bottom edge, exp's top-right and projects' top-left trace one continuous
      ring around it. */
   .notch-top {
-    -webkit-mask: radial-gradient(circle at 50% calc(100% + var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
-    mask: radial-gradient(circle at 50% calc(100% + var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    -webkit-mask: radial-gradient(
+      circle at 50% calc(100% + var(--half-g)),
+      transparent 0 calc(var(--well-r) - 1px),
+      #000 var(--well-r)
+    );
+    mask: radial-gradient(
+      circle at 50% calc(100% + var(--half-g)),
+      transparent 0 calc(var(--well-r) - 1px),
+      #000 var(--well-r)
+    );
   }
   .notch-br {
-    -webkit-mask: radial-gradient(circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
-    mask: radial-gradient(circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    -webkit-mask: radial-gradient(
+      circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)),
+      transparent 0 calc(var(--well-r) - 1px),
+      #000 var(--well-r)
+    );
+    mask: radial-gradient(
+      circle at calc(100% + var(--half-g)) calc(-1 * var(--half-g)),
+      transparent 0 calc(var(--well-r) - 1px),
+      #000 var(--well-r)
+    );
   }
   .notch-bl {
-    -webkit-mask: radial-gradient(circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
-    mask: radial-gradient(circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)), transparent 0 calc(var(--well-r) - 1px), #000 var(--well-r));
+    -webkit-mask: radial-gradient(
+      circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)),
+      transparent 0 calc(var(--well-r) - 1px),
+      #000 var(--well-r)
+    );
+    mask: radial-gradient(
+      circle at calc(-1 * var(--half-g)) calc(-1 * var(--half-g)),
+      transparent 0 calc(var(--well-r) - 1px),
+      #000 var(--well-r)
+    );
   }
 
   /* The tight arc margin makes the hover lift visibly desync the curves from

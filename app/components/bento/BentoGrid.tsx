@@ -1,28 +1,25 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
-import {
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  type Variants,
-} from "motion/react";
-import Image from "next/image";
-import { profile, projects, experiences } from "@/lib/data";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { motion, useMotionValue, useReducedMotion, type Variants } from "motion/react";
 import {
   UserIcon,
   LayersIcon,
   BriefcaseIcon,
   FolderIcon,
-  MapPinIcon,
   SendIcon,
-  ArrowRightIcon,
 } from "../icons";
-import BentoCard from "./BentoCard";
 import CircuitField from "./CircuitField";
 import Modal from "./Modal";
-import PhotoOrb from "./PhotoOrb";
-import { CircuitTrace } from "./decor";
+import { IdentitySection } from "./IdentitySection";
+import { StatusSection } from "./StatusSection";
+import { AboutSection } from "./AboutSection";
+import { OrbSection } from "./OrbSection";
+import { ExperienceSection } from "./ExperienceSection";
+import { StatSection } from "./StatSection";
+import { SkillsSection } from "./SkillsSection";
+import { ProjectsSection } from "./ProjectsSection";
+import { ContactSection } from "./ContactSection";
 import {
   AboutContent,
   SkillsContent,
@@ -73,19 +70,6 @@ const MODALS: Record<ModalKey, ModalMeta> = {
   },
 };
 
-const SKILL_TAGS = [
-  "React",
-  "Next.js",
-  "Vue.js",
-  "TypeScript",
-  "Tailwind CSS",
-  "React Native",
-  "Redux",
-  "Zustand",
-  "React Query",
-  "GSAP",
-];
-
 const container: Variants = {
   hidden: {},
   show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
@@ -101,25 +85,6 @@ const item: Variants = {
   },
 };
 
-// Each direct grid child: carries the grid-area + entrance animation, and
-// stretches to fill its cell so the BentoCard inside can be h-full. Lives at
-// module scope so grid re-renders never change its component identity — a
-// definition inside BentoGrid would remount every cell on any state change,
-// killing in-flight orb animations (charge/drain) with them.
-const Cell = ({
-  area,
-  variants,
-  children,
-}: {
-  area: string;
-  variants?: Variants;
-  children: ReactNode;
-}) => (
-  <motion.div style={{ gridArea: area }} variants={variants} className="min-w-0">
-    {children}
-  </motion.div>
-);
-
 export default function BentoGrid() {
   const reduce = useReducedMotion();
   const [active, setActive] = useState<ModalKey | null>(null);
@@ -129,6 +94,26 @@ export default function BentoGrid() {
      the interaction never touches React state up here. */
   const chargeProgress = useMotionValue(0);
 
+  // Bumped by the Skills reset button to re-seed the tidy chip layout.
+  const [skillsReset, setSkillsReset] = useState(0);
+
+  // Live Jakarta local time for the availability card — computed client-side
+  // only (starts blank so server/client markup matches on hydration).
+  const [localTime, setLocalTime] = useState("");
+  useEffect(() => {
+    const update = () =>
+      setLocalTime(
+        new Intl.DateTimeFormat("en-GB", {
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "Asia/Jakarta",
+        }).format(new Date()),
+      );
+    update();
+    const id = setInterval(update, 30_000);
+    return () => clearInterval(id);
+  }, []);
+
   // Retain the last-shown meta so the modal keeps its content during the
   // close/exit animation (active flips to null before the panel finishes).
   const lastMeta = useRef<ModalMeta | null>(null);
@@ -136,7 +121,6 @@ export default function BentoGrid() {
   const meta = lastMeta.current;
 
   const cellVariants = reduce ? undefined : item;
-  const currentRole = experiences[0];
 
   return (
     <>
@@ -150,188 +134,30 @@ export default function BentoGrid() {
             absolute overlay (not a grid item), energized while charging. */}
         <CircuitField progress={chargeProgress} />
 
-        {/* Identity — name + role + location. Its bottom edge curves up around
-            the orb's top (notch-top); at desktop the deep arc eats the lower
-            half, so the name block sits in the top zone. */}
-        <Cell variants={cellVariants} area="identity">
-          <BentoCard className="notch-top items-center justify-center text-center desk:justify-start desk:pt-8">
-            <p className="m-0 mb-1.5 inline-flex items-center justify-center gap-1.5 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-accent-strong">
-              <MapPinIcon className="size-[1.15em]" />
-              {profile.location}
-            </p>
-            <h1 className="m-0 bg-[linear-gradient(115deg,var(--color-fg)_25%,var(--color-accent)_75%,var(--color-accent-2)_105%)] bg-clip-text text-[clamp(2rem,6vw,3.4rem)] font-extrabold leading-[1.05] text-transparent">
-              {profile.name}
-            </h1>
-            <p className="m-0 mt-2 text-[clamp(1rem,2.5vw,1.35rem)] font-semibold text-accent-strong">
-              {profile.role}
-            </p>
-          </BentoCard>
-        </Cell>
-
-        {/* Status — availability toggle */}
-        <Cell variants={cellVariants} area="status">
-          <BentoCard className="justify-between">
-            <span className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-muted-2">
-              Availability
-            </span>
-            <div className="flex items-center gap-3">
-              <span className="relative inline-flex h-7 w-12 items-center rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-accent-2))] p-1 shadow-inner">
-                <span className="ml-auto size-5 rounded-full bg-white shadow" />
-              </span>
-              <span className="text-[0.92rem] font-semibold">Open to work</span>
-            </div>
-          </BentoCard>
-        </Cell>
-
-        {/* About — tall left rail */}
-        <Cell variants={cellVariants} area="about">
-          <BentoCard
-            onClick={() => setActive("about")}
-            label="Open About details"
-            className="gap-3"
-          >
-            <span className="title-icon text-[1.6rem]" aria-hidden="true">
-              <UserIcon />
-            </span>
-            <h2 className="m-0 text-[1.3rem] font-bold">About me</h2>
-            <p className="m-0 text-[0.95rem] text-muted">
-              4+ years crafting responsive, user-centric web &amp; mobile apps
-              across fintech, blockchain &amp; government.
-            </p>
-            <span className="mt-auto inline-flex items-center gap-1.5 font-mono text-[0.75rem] text-accent-strong">
-              Read bio
-              <ArrowRightIcon className="size-[1.1em] transition-transform group-hover:translate-x-0.5" />
-            </span>
-            <CircuitTrace className="bottom-3 right-3 h-24 w-24 opacity-40" />
-          </BentoCard>
-        </Cell>
-
-        {/* Photo orb — frameless centerpiece floating in the well the three
-            neighbouring cards curve around (desktop). No card surface. */}
-        <Cell variants={cellVariants} area="orb">
-          <div className="flex h-full w-full items-center justify-center">
-            <PhotoOrb progress={chargeProgress} />
-          </div>
-        </Cell>
-
-        {/* Skills — tall right rail */}
-        <Cell variants={cellVariants} area="skills">
-          <BentoCard
-            onClick={() => setActive("skills")}
-            label="Open Skills details"
-            className="gap-3"
-          >
-            <div className="flex items-center justify-between">
-              <span className="title-icon text-[1.4rem]" aria-hidden="true">
-                <LayersIcon />
-              </span>
-              <ArrowRightIcon className="size-4 -rotate-45 text-accent-strong transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </div>
-            <h2 className="m-0 text-[1.3rem] font-bold">Skills</h2>
-            <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
-              {SKILL_TAGS.map((tech) => (
-                <li key={tech} className="tag">
-                  {tech}
-                </li>
-              ))}
-            </ul>
-            <span className="mt-auto font-mono text-[0.72rem] text-muted-2">
-              20+ technologies · tap to expand
-            </span>
-          </BentoCard>
-        </Cell>
-
-        {/* Stat — years of experience */}
-        <Cell variants={cellVariants} area="stat">
-          <BentoCard
-            onClick={() => setActive("about")}
-            label="Open About details"
-            className="justify-center"
-          >
-            <span className="text-[2.6rem] font-extrabold leading-none text-accent-strong">
-              {profile.stats[0].value}
-            </span>
-            <span className="mt-1 text-[0.9rem] text-muted">
-              {profile.stats[0].label}
-            </span>
-          </BentoCard>
-        </Cell>
-
-        {/* Experience — current role. Top-right edge curves around the orb's
-            lower-left; content sits below the arc (desk:justify-end). */}
-        <Cell variants={cellVariants} area="exp">
-          <BentoCard
-            onClick={() => setActive("experience")}
-            label="Open Experience details"
-            className="notch-br gap-2 desk:justify-end"
-          >
-            <span className="title-icon text-[1.3rem]" aria-hidden="true">
-              <BriefcaseIcon />
-            </span>
-            <h2 className="m-0 text-[1.15rem] font-bold">Experience</h2>
-            <p className="m-0 text-[0.9rem] font-semibold text-accent-strong">
-              {currentRole.role}
-            </p>
-            <p className="m-0 font-mono text-[0.72rem] text-muted-2">
-              Now · {experiences.length} roles
-            </p>
-            <CircuitTrace className="bottom-2 right-2 h-16 w-16 opacity-30" />
-          </BentoCard>
-        </Cell>
-
-        {/* Projects — featured work. Top-left edge curves around the orb's
-            lower-right; content sits below the arc (desk:justify-end). */}
-        <Cell variants={cellVariants} area="projects">
-          <BentoCard
-            onClick={() => setActive("projects")}
-            label="Open Projects details"
-            className="notch-bl gap-2 desk:justify-end"
-          >
-            <span className="title-icon text-[1.3rem]" aria-hidden="true">
-              <FolderIcon />
-            </span>
-            <h2 className="m-0 text-[1.15rem] font-bold">Projects</h2>
-            <p className="m-0 text-[0.8rem] text-muted">
-              {projects.length} featured builds
-            </p>
-            {/* mt-auto pins thumbs to the bottom when stacked; at desktop the
-                whole column is bottom-packed (justify-end) below the arc, so
-                the auto margin would shove the title up into the cutout. */}
-            <div className="mt-auto flex gap-2 pt-2 desk:mt-0">
-              {projects.map((project) => (
-                <span
-                  key={project.name}
-                  className="relative aspect-square w-full max-w-[3.2rem] overflow-hidden rounded-lg border border-white/10 bg-accent-soft"
-                >
-                  <Image
-                    src={project.thumbnail}
-                    alt=""
-                    fill
-                    sizes="52px"
-                    className="object-cover"
-                  />
-                </span>
-              ))}
-            </div>
-          </BentoCard>
-        </Cell>
-
-        {/* Contact — CTA */}
-        <Cell variants={cellVariants} area="contact">
-          <BentoCard
-            onClick={() => setActive("contact")}
-            label="Open Contact details"
-            className="justify-center gap-2.5"
-          >
-            <span className="font-mono text-[0.66rem] uppercase tracking-[0.16em] text-accent-strong">
-              Let&apos;s talk
-            </span>
-            <span className="inline-flex items-center gap-2 self-start rounded-full bg-[linear-gradient(90deg,var(--color-accent),var(--color-accent-2))] px-5 py-2.5 font-semibold text-white shadow-[0_12px_26px_-10px_rgba(74,158,255,0.55)] transition-transform group-hover:-translate-y-0.5">
-              <SendIcon />
-              Get in touch
-            </span>
-          </BentoCard>
-        </Cell>
+        <IdentitySection variants={cellVariants} />
+        <StatusSection variants={cellVariants} localTime={localTime} />
+        <AboutSection variants={cellVariants} onOpen={() => setActive("about")} />
+        <OrbSection variants={cellVariants} progress={chargeProgress} />
+        <ExperienceSection
+          variants={cellVariants}
+          onOpen={() => setActive("experience")}
+        />
+        <StatSection variants={cellVariants} onOpen={() => setActive("about")} />
+        <SkillsSection
+          variants={cellVariants}
+          progress={chargeProgress}
+          resetKey={skillsReset}
+          onReset={() => setSkillsReset((k) => k + 1)}
+          onOpen={() => setActive("skills")}
+        />
+        <ProjectsSection
+          variants={cellVariants}
+          onOpen={() => setActive("projects")}
+        />
+        <ContactSection
+          variants={cellVariants}
+          onOpen={() => setActive("contact")}
+        />
       </motion.div>
 
       <Modal

@@ -34,7 +34,7 @@ export type SocialLink = {
 
 export const profile = {
   name: "Zahir Wakid",
-  role: "Frontend Developer",
+  role: "Software Engineer (Frontend Developer Specialist)",
   location: "Jakarta, Indonesia",
   email: "wakidzahir@gmail.com",
   phone: "(+62) 812-1032-2275",
