@@ -27,7 +27,7 @@ export function ContactSection({
           <SendIcon />
           Get in touch
         </span>
-        <div
+        {/* <div
           className="flex gap-2 text-[1.05rem] text-accent-strong"
           aria-hidden="true"
         >
@@ -40,7 +40,7 @@ export function ContactSection({
           <span className="inline-flex size-8 items-center justify-center rounded-full border border-white/10 bg-white/5">
             <UpworkIcon />
           </span>
-        </div>
+        </div> */}
       </BentoCard>
     </Cell>
   );

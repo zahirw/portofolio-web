@@ -106,7 +106,7 @@ export default function Modal({
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="glass-strong gradient-border relative z-10 max-h-[90vh] w-full max-w-[42rem] overflow-y-auto rounded-t-3xl border border-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] tab:rounded-3xl"
+            className="glass-strong gradient-border relative z-10 max-h-[90vh] w-full max-w-[42rem] overflow-hidden rounded-t-3xl border border-white/10 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] tab:rounded-3xl"
             initial={
               reduce ? { opacity: 0 } : { opacity: 0, y: 28, scale: 0.98 }
             }
@@ -122,37 +122,39 @@ export default function Modal({
               className="dot-grid pointer-events-none absolute right-0 top-0 h-28 w-28 opacity-60 [mask-image:radial-gradient(circle_at_top_right,#000,transparent_70%)]"
             />
 
-            <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-white/10 bg-white/3 px-6 py-5 backdrop-blur-md tab:px-8">
-              <div>
-                {eyebrow ? (
-                  <p className="m-0 mb-1 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-strong">
-                    {eyebrow}
-                  </p>
-                ) : null}
-                <h2
-                  id={titleId}
-                  className="m-0 flex items-center gap-[0.6rem] text-[clamp(1.4rem,4vw,1.9rem)] font-bold"
-                >
-                  {icon ? (
-                    <span className="title-icon" aria-hidden="true">
-                      {icon}
-                    </span>
+            <div className="max-h-[90vh] overflow-y-auto">
+              <header className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-white/10 bg-white/3 px-6 py-5 backdrop-blur-md tab:px-8">
+                <div>
+                  {eyebrow ? (
+                    <p className="m-0 mb-1 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-accent-strong">
+                      {eyebrow}
+                    </p>
                   ) : null}
-                  {title}
-                </h2>
-              </div>
-              <button
-                ref={closeRef}
-                type="button"
-                onClick={onClose}
-                aria-label="Close dialog"
-                className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[1.15rem] text-fg transition hover:border-accent hover:text-accent-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
-              >
-                <CloseIcon />
-              </button>
-            </header>
+                  <h2
+                    id={titleId}
+                    className="m-0 flex items-center gap-[0.6rem] text-[clamp(1.4rem,4vw,1.9rem)] font-bold"
+                  >
+                    {icon ? (
+                      <span className="title-icon" aria-hidden="true">
+                        {icon}
+                      </span>
+                    ) : null}
+                    {title}
+                  </h2>
+                </div>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  onClick={onClose}
+                  aria-label="Close dialog"
+                  className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/10 bg-white/5 text-[1.15rem] text-fg transition hover:border-accent hover:text-accent-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2"
+                >
+                  <CloseIcon />
+                </button>
+              </header>
 
-            <div className="px-6 py-6 tab:px-8 tab:py-7">{children}</div>
+              <div className="px-6 py-6 tab:px-8 tab:py-7">{children}</div>
+            </div>
           </motion.div>
         </motion.div>
       ) : null}

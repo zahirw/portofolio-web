@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { motion, useMotionValue, useReducedMotion, type Variants } from "motion/react";
 import {
   UserIcon,
@@ -116,9 +116,12 @@ export default function BentoGrid() {
 
   // Retain the last-shown meta so the modal keeps its content during the
   // close/exit animation (active flips to null before the panel finishes).
-  const lastMeta = useRef<ModalMeta | null>(null);
-  if (active) lastMeta.current = MODALS[active];
-  const meta = lastMeta.current;
+  const [meta, setMeta] = useState<ModalMeta | null>(null);
+  const [prevActive, setPrevActive] = useState<ModalKey | null>(null);
+  if (active !== prevActive) {
+    setPrevActive(active);
+    if (active) setMeta(MODALS[active]);
+  }
 
   const cellVariants = reduce ? undefined : item;
 

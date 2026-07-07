@@ -24,7 +24,7 @@ export function AboutSection({
         </span>
         <h2 className="m-0 text-[1.3rem] font-bold">About me</h2>
         <p className="m-0 text-[0.95rem] text-muted">
-          4+ years crafting responsive, user-centric web &amp; mobile apps
+          7+ years crafting responsive, user-centric web &amp; mobile apps
           across fintech, blockchain &amp; government.
         </p>
         <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
