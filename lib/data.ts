@@ -188,7 +188,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "React", "TypeScript"],
     description:
       "Single sign-on platform and dashboard built with Next.js, integrating secure login and user management.",
-    thumbnail: "/projects/betapass-thumbnail.png",
+    thumbnail: "/projects/betapass/betapass-thumbnail.png",
     detail: {
       company: "Nusameta",
       companyUrl: "https://www.nusameta.io",
@@ -219,7 +219,7 @@ export const projects: Project[] = [
             "Customizable user preferences and settings for a personalized experience across the ecosystem.",
             "Secure password management with password reset functionality.",
           ],
-          images: ["/projects/betapass-profile-page.png"],
+          images: ["/projects/betapass/betapass-profile-page.png"],
         },
         {
           title: "KYC Verification",
@@ -228,7 +228,7 @@ export const projects: Project[] = [
             "Guided, multi-step identity verification flow with clear progress indicators.",
             "Form validation and document upload handling to ensure submitted data meets compliance requirements.",
           ],
-          images: ["/projects/betapass-kyc.png"],
+          images: ["/projects/betapass/betapass-kyc.png"],
         },
         {
           title: "Wallet Management",
@@ -237,7 +237,7 @@ export const projects: Project[] = [
             "Collaborated closely with the backend team to implement blockchain wallet connectivity and transaction features.",
             "Displays balances and transaction activity in a clear, responsive layout.",
           ],
-          images: ["/projects/betapass-wallet-management.png"],
+          images: ["/projects/betapass/betapass-wallet-management.png"],
         },
         {
           title: "Signup Page",
@@ -249,7 +249,7 @@ export const projects: Project[] = [
             "Custom validation rules for password strength, email format, and username availability checking.",
             "Error message handling with clear, user-friendly notifications that guide users to correct their input.",
           ],
-          images: ["/projects/betapass-signup.png"],
+          images: ["/projects/betapass/betapass-signup.png"],
         },
         {
           title: "Login Page",
@@ -260,7 +260,7 @@ export const projects: Project[] = [
             "Password recovery option with email verification for users who need to reset their credentials.",
             "Integration with WhatsApp authentication, allowing users to sign in using their verified WhatsApp number.",
           ],
-          images: ["/projects/betapass-signin.png"],
+          images: ["/projects/betapass/betapass-signin.png"],
         },
       ],
       liveUrl: "https://betapass.nusameta.io/",
@@ -272,7 +272,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "TypeScript", "Socket.io"],
     description:
       "Student data management dashboard integrated with gamified e-learning within the Nusameta application.",
-    thumbnail: "/projects/edu-thumbnail.png",
+    thumbnail: "/projects/betapass-edu/edu-thumbnail.png",
     detail: {
       company: "Nusameta",
       companyUrl: "https://www.nusameta.io",
@@ -297,7 +297,7 @@ export const projects: Project[] = [
             "Visual confirmation of school availability ensures accurate data entry and builds user confidence before submission.",
             "Accessibility support with clear input formatting and interactive feedback for ease of use.",
           ],
-          images: ["/projects/edu-join-organization-page.png"],
+          images: ["/projects/betapass-edu/edu-join-organization-page.png"],
         },
         {
           title: "Register Organization Page",
@@ -309,8 +309,8 @@ export const projects: Project[] = [
             "A multi-step form interface (2 steps) ensures that both school and admin data are submitted completely and accurately.",
           ],
           images: [
-            "/projects/edu-register-organization-page.png",
-            "/projects/edu-register-organization-page-2.png",
+            "/projects/betapass-edu/edu-register-organization-page.png",
+            "/projects/betapass-edu/edu-register-organization-page-2.png",
           ],
         },
         {
@@ -321,7 +321,7 @@ export const projects: Project[] = [
             "Designed categorized notification cards with dynamic status labels and timestamps.",
             "Notifications grouped by type with clear icons and color-coded statuses for improved user awareness.",
           ],
-          images: ["/projects/edu-realtime-notif.png"],
+          images: ["/projects/betapass-edu/edu-realtime-notif.png"],
         },
         {
           title: "User Data Page",
@@ -332,7 +332,7 @@ export const projects: Project[] = [
             "Designed a clean, responsive layout with search functionality to quickly locate specific user records.",
             "Sidebar navigation connects seamlessly to related modules like Student and Teacher management for efficient admin workflows.",
           ],
-          images: ["/projects/edu-user-data-page.png"],
+          images: ["/projects/betapass-edu/edu-user-data-page.png"],
         },
       ],
     },
@@ -343,7 +343,7 @@ export const projects: Project[] = [
     stack: ["Next.js", "Web3.js", "TypeScript"],
     description:
       "NFT marketplace built for Nusameta, providing a seamless experience for buying, selling, and trading digital assets on the blockchain.",
-    thumbnail: "/projects/nusamarket-thumbnail.png",
+    thumbnail: "/projects/nusamarket/nusamarket-thumbnail.png",
     detail: {
       company: "Nusameta",
       companyUrl: "https://www.nusameta.io",
@@ -365,7 +365,7 @@ export const projects: Project[] = [
             "Comprehensive user profile page displays NFT collections, allowing users to browse, showcase, and manage their digital assets.",
             "Interactive gallery view with filtering options enables users to sort their NFTs by various attributes such as rarity, acquisition date, and price.",
           ],
-          images: ["/projects/nusamarket-nft-page.png"],
+          images: ["/projects/nusamarket/nusamarket-nft-page.png"],
         },
         {
           title: "Activity Page",
@@ -376,7 +376,7 @@ export const projects: Project[] = [
             "Built-in search bar enables fast lookup by artwork name or creator.",
             "Fully responsive layout ensures smooth user experience across desktop and mobile devices.",
           ],
-          images: ["/projects/nusamarket-activity-page.png"],
+          images: ["/projects/nusamarket/nusamarket-activity-page.png"],
         },
         {
           title: "Earning Page",
@@ -386,7 +386,7 @@ export const projects: Project[] = [
             "Clean and visually appealing layout with a responsive design that works seamlessly across devices.",
             "Helps both creators and collectors understand and optimize their monetization strategies within the platform.",
           ],
-          images: ["/projects/nusamarket-earning-page.png"],
+          images: ["/projects/nusamarket/nusamarket-earning-page.png"],
         },
       ],
     },
@@ -397,7 +397,7 @@ export const projects: Project[] = [
     stack: ["React Native", "Blockchain", "NFT"],
     description:
       "Mobile ticketing app built with React Native, integrating NFT-based ticket validation.",
-    thumbnail: "/projects/entri-login.jpg",
+    thumbnail: "/projects/entri/entri-login.jpg",
     detail: {
       company: "Nusameta",
       companyUrl: "https://www.nusameta.io",
@@ -427,7 +427,7 @@ export const projects: Project[] = [
             "User-Centric Flexibility: Designed to accommodate different user needs — from commitment-free browsing to secure, personalized access.",
             "Intuitive Onboarding: A visually engaging and minimal interface that invites interaction with clarity and ease.",
           ],
-          images: ["/projects/entri-login.jpg"],
+          images: ["/projects/entri/entri-login.jpg"],
         },
         {
           title: "Home Screen",
@@ -437,7 +437,7 @@ export const projects: Project[] = [
             "Featured Events Section: Curated spotlight for trending or high-priority events to boost visibility and discovery.",
             "Intuitive Navigation: Bottom navigation bar offers quick access to home, search, and user profile — streamlining the browsing experience.",
           ],
-          images: ["/projects/entri-home.jpg"],
+          images: ["/projects/entri/entri-home.jpg"],
         },
         {
           title: "Event Detail Screen",
@@ -447,7 +447,7 @@ export const projects: Project[] = [
             "Visitor Insights Panel: Displays data on total check-ins, attendance trends, or guest activity to boost transparency and anticipation.",
             "Action-Oriented Flow: Smart UI encourages confident decision-making — whether it's confirming participation or viewing verified entries.",
           ],
-          images: ["/projects/entri-detail-event.jpg"],
+          images: ["/projects/entri/entri-detail-event.jpg"],
         },
         {
           title: "Select Eligible NFT Screen",
@@ -457,7 +457,7 @@ export const projects: Project[] = [
             'Interactive Purchase Flow: "Buy Now" buttons streamline transactions, backed by secure wallet integration and blockchain validation.',
             "User-Guided Ticket Generation: A simple prompt guides users to generate tickets by choosing verified assets, reinforcing trust and ease of use.",
           ],
-          images: ["/projects/entri-eligile-nft.jpg"],
+          images: ["/projects/entri/entri-eligile-nft.jpg"],
         },
         {
           title: "Generate Ticket Screen",
@@ -470,8 +470,8 @@ export const projects: Project[] = [
             "Instant Utility: QR code is ready for scanning at the venue, making NFT integration seamless and functional.",
           ],
           images: [
-            "/projects/entri-generate-ticket.jpg",
-            "/projects/entri-example-ticket.jpg",
+            "/projects/entri/entri-generate-ticket.jpg",
+            "/projects/entri/entri-example-ticket.jpg",
           ],
         },
         {
@@ -482,7 +482,7 @@ export const projects: Project[] = [
             "Compact Ticket Cards: Each ticket displays event name, date, transaction info, and status — ideal for quick scans.",
             "Status Intelligence: Differentiates between active and used tickets, reducing confusion at venue checkpoints.",
           ],
-          images: ["/projects/entri-myticket.jpg"],
+          images: ["/projects/entri/entri-myticket.jpg"],
         },
       ],
     },
@@ -493,7 +493,7 @@ export const projects: Project[] = [
     stack: ["Vue.js", "Ant Design", "Pinia"],
     description:
       "Omnichannel commerce and supply chain platform unifying online and offline sales channels for B2B/B2C brands.",
-    thumbnail: "/projects/powerbizz-fulfillment.jpg",
+    thumbnail: "/projects/powerbiz/powerbizz-fulfillment.jpg",
     detail: {
       company: "Powercommerce",
       companyUrl: "https://powercommerce.asia/",
@@ -517,7 +517,7 @@ export const projects: Project[] = [
             "Comprehensive Data Rows: Shows order ID, shipping ID, total items, inventory status, and channel — empowering warehouse teams to act quickly.",
             "Integrated Navigation: Part of a full logistics suite including inventory, warehouse settings, and export history for seamless ops management.",
           ],
-          images: ["/projects/powerbizz-fulfillment.jpg"],
+          images: ["/projects/powerbiz/powerbizz-fulfillment.jpg"],
         },
         {
           title: "User Page",
@@ -528,7 +528,7 @@ export const projects: Project[] = [
             "Inline Actions: Edit, delete, and view user history directly from the table — streamlining admin workflows.",
             "Scalable Design: Built to support complex organizations with multiple businesses and user roles.",
           ],
-          images: ["/projects/powerbizz-user.jpg"],
+          images: ["/projects/powerbiz/powerbizz-user.jpg"],
         },
         {
           title: "Payment History Page",
@@ -539,7 +539,7 @@ export const projects: Project[] = [
             "Account Specifics: Includes payment sources (e.g. account numbers, method names) for reconciliation accuracy.",
             "Smart Utilities: Features global search and payment creation for streamlined financial operations.",
           ],
-          images: ["/projects/powerbizz-history-payment.jpg"],
+          images: ["/projects/powerbiz/powerbizz-history-payment.jpg"],
         },
         {
           title: "Invoice History Page",
@@ -550,22 +550,103 @@ export const projects: Project[] = [
             "Admin-Ready Interface: Built-in navigation connects to inventory, fulfillment, orders, promotions, and more — keeping operations fluid.",
           ],
           images: [
-            "/projects/powerbizz-invoice.jpg",
-            "/projects/powerbizz-invoice-detail.jpg",
+            "/projects/powerbiz/powerbizz-invoice.jpg",
+            "/projects/powerbiz/powerbizz-invoice-detail.jpg",
           ],
         },
       ],
       liveUrl: "https://powerbiz.asia/en/page/home",
     },
   },
-  // {
-  //   name: "SIPKONS",
-  //   tagline: "Government Housing System",
-  //   stack: ["Vue.js", "CMS"],
-  //   description:
-  //     "Government housing system built with Vue.js, featuring custom CMS capabilities.",
-  //   thumbnail: "/projects/sipkons.svg",
-  // },
+  {
+    name: "Sin Na",
+    tagline: "Verified Social Platform",
+    stack: ["Next.js", "Material UI", "i18next"],
+    description:
+      "Social platform for verified, misinformation-free discussion — combining a shared community wall, topic-based forums, and identity verification to fight fake news, hate speech, and trolling.",
+    thumbnail: "/projects/sinna/sinna-landing-page.png",
+    detail: {
+      company: "Holistic Kids Foundation",
+      overview:
+        "Sin Na is a social/community platform built for Holistic Kids Foundation to counter bullying, trolling, fake news, hate speech, and misinformation online. Members post to a shared wall and join topic-based forums — Science, Human Rights, Tech, Nature, and more — where content can carry verification links and trust badges. Identity (KYC) verification and an admin moderation suite keep the community accountable, with support for both individual and organization accounts.",
+      roles: [
+        "Designing and rolling out the platform's full internationalization system — translating and integrating 10+ languages (Spanish, German, Dutch, Italian, Japanese, Korean, Portuguese, Swedish, Danish, Norwegian, Ukrainian) across every screen, with dynamic language switching synced to each user's profile",
+        "Building the admin content-management page for moderating posts, verification status, and featured content",
+        "Adding forum features including rich-text thread descriptions and content sharing",
+        "Shipping ongoing UI/UX fixes across mobile responsiveness, forum layouts, navigation, and animation",
+        "Using Next.js 14 and Material UI to create a responsive interface across multiple devices",
+        "Developing and optimizing API integration with Firebase backend services to ensure seamless data flow and functionality",
+        "Collaborating within a multi-developer team through PR review and automated CI/CD deployment (GitHub Actions)",
+      ],
+      technologies: [
+        "Next.js 14",
+        "Material UI",
+        "Redux Toolkit",
+        "Firebase",
+        "i18next",
+        "TensorFlow.js",
+      ],
+      features: [
+        {
+          title: "Community Wall & Verified Posts",
+          points: [
+            "Central shared wall where members post updates, articles, and media across the community.",
+            "Posts can carry a verification link and a verified badge, letting readers trace claims back to a trusted source.",
+            "Per-post translate control lets any member read content in their own language, independent of the author's language.",
+            "Save, collect, and share actions are surfaced directly on each post card.",
+          ],
+          images: ["/projects/sinna/sinna-wall-viewport.png"],
+        },
+        {
+          title: "Topic-Based Forums",
+          points: [
+            "Members browse and join topic rooms — Science, Human Rights, Tech, Nature, Aware, Upholder, and more — organized as an icon-driven category rail.",
+            "All Forums / My Forums / Subscribed tabs let members manage which communities they follow.",
+            "Rich-text thread descriptions with tags (e.g. eco package, mushrooms, mycelium) give each forum room clear context and discoverability.",
+            "Member count and last-active timestamps surface how alive each room is before joining.",
+          ],
+          images: ["/projects/sinna/sinna-forums.png"],
+        },
+        {
+          title: "Create Post Flow",
+          points: [
+            "Guided, step-by-step post creation: choose a category, upload images, write a title, then compose the body.",
+            "Rich-text editor (bold, italic, underline, quote, lists, alignment, links) built for long-form, well-formatted posts.",
+            "A required Verification Link field plus a \"Mark as verified\" toggle enforces the platform's source-backed posting policy.",
+            "Save Draft support lets members return to unfinished posts before publishing.",
+          ],
+          images: ["/projects/sinna/sinna-create-post.png"],
+        },
+        {
+          title: "Admin Moderation Suite",
+          points: [
+            "Admin Content page lists every post with filters for category, verified status, featured status, and archive state.",
+            "Admin Users page manages individual and organization accounts side by side, with verification, active/blocked status, report counts, and a Banned Words list for automated content filtering.",
+            "Admin Dashboard rolls up platform health — total/verified/blocked users, forum and post totals, and category-wise post trends over time.",
+            "Built the admin content-management page end to end as part of the moderation suite.",
+          ],
+          images: [
+            "/projects/sinna/sinna-admin-content.png",
+            "/projects/sinna/sinna-admin-users.png",
+            "/projects/sinna/sinna-admin-dashboard.png",
+          ],
+        },
+        {
+          title: "Account, Identity & Internationalization",
+          points: [
+            "Individual and organization sign-up flows, with organizations onboarding separately for verified institutional accounts.",
+            "Identity (KYC) verification status is tracked per account and required to unlock full posting privileges.",
+            "Led the platform's full internationalization rollout — 10+ languages wired into every screen via i18next.",
+            "Per-user language preference lives in Account Settings and drives dynamic language switching across the whole app.",
+          ],
+          images: [
+            "/projects/sinna/sinna-register.png",
+            "/projects/sinna/sinna-user-profile.png",
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export const educationList = [
